@@ -1,0 +1,107 @@
+<footer class="w-full border-t border-koliss-border bg-white pb-8 pt-16">
+  <div class="mx-auto max-w-[1440px] px-6">
+    <div class="grid gap-12 md:grid-cols-2 lg:grid-cols-[1.6fr_1fr_1fr_1fr]">
+      <!-- Marque -->
+      <div>
+        <a routerLink="/" class="flex items-center gap-3" [attr.aria-label]="siteName">
+          <img src="assets/images/logo-koliss-Banniere.png" alt="KOLISS" class="h-14 w-auto object-contain" />
+          <span
+            class="border-l-2 border-koliss-secondary pl-3 text-xs font-extrabold uppercase tracking-[0.18em] text-koliss-primary"
+            >Sourcing</span
+          >
+        </a>
+        <p class="mt-5 max-w-sm text-base leading-relaxed text-koliss-text-muted">
+          La 1ère marketplace de sourcing B2B en gros pour les entreprises africaines. Énergie, BTP,
+          Agricole, Médical, Industriel.
+        </p>
+        <p class="mb-3 mt-6 text-sm font-semibold text-koliss-text-muted">Suivez-nous</p>
+        <div class="flex gap-3">
+          @for (social of socials; track social.label) {
+            <a
+              [href]="social.url"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex h-11 w-11 items-center justify-center border-2 border-koliss-primary transition-all duration-300 hover:bg-koliss-primary/10"
+              [attr.aria-label]="social.label"
+            >
+              <img [src]="'assets/icons/' + social.icon" [alt]="''" class="h-5 w-5" />
+            </a>
+          }
+        </div>
+      </div>
+
+      <!-- Catégories -->
+      <nav aria-label="Catégories">
+        <h2 class="mb-4 text-sm font-extrabold uppercase tracking-wide text-koliss-primary">Catégories</h2>
+        <ul class="flex list-none flex-col gap-2.5">
+          @for (category of categories; track category.id) {
+            <li>
+              <a
+                routerLink="/boutique"
+                [queryParams]="{ cat: category.id }"
+                class="inline-flex items-center gap-2 text-sm text-koliss-text-muted transition-colors hover:text-koliss-primary"
+              >
+                <i class="pi text-xs" [class]="category.icon" aria-hidden="true"></i>
+                {{ category.label }}
+              </a>
+            </li>
+          }
+        </ul>
+      </nav>
+
+      <!-- Services -->
+      <nav aria-label="Services">
+        <h2 class="mb-4 text-sm font-extrabold uppercase tracking-wide text-koliss-primary">Services</h2>
+        <ul class="flex list-none flex-col gap-2.5">
+          @for (service of services; track service) {
+            <li>
+              <a
+                routerLink="/solutions"
+                class="text-sm text-koliss-text-muted transition-colors hover:text-koliss-primary"
+                >{{ service }}</a
+              >
+            </li>
+          }
+        </ul>
+      </nav>
+
+      <!-- Contact -->
+      <address class="not-italic">
+        <h2 class="mb-4 text-sm font-extrabold uppercase tracking-wide text-koliss-primary">Contact</h2>
+        <ul class="flex list-none flex-col gap-2.5 text-sm text-koliss-text-muted">
+          <li>
+            <a [href]="'tel:' + contact.phoneTel" class="transition-colors hover:text-koliss-primary">
+              {{ contact.phone }}
+            </a>
+          </li>
+          <li>
+            <a [href]="'mailto:' + contact.email" class="transition-colors hover:text-koliss-primary">
+              {{ contact.email }}
+            </a>
+          </li>
+          <li>
+            <a
+              [href]="whatsappUrl"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="transition-colors hover:text-koliss-primary"
+              >WhatsApp Business</a
+            >
+          </li>
+          <li>{{ contact.city }}</li>
+        </ul>
+      </address>
+    </div>
+
+    <div
+      class="mt-12 flex flex-col items-center justify-between gap-3 border-t border-koliss-border pt-6 text-sm text-koliss-text-soft md:flex-row"
+    >
+      <p>© {{ year }} {{ siteName }} · Tous droits réservés</p>
+      <p class="flex gap-5">
+        <span>Mentions légales</span>
+        <span>CGV</span>
+        <span>Confidentialité</span>
+      </p>
+    </div>
+  </div>
+</footer>

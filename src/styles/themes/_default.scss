@@ -1,0 +1,30 @@
+// ==========================================================================
+// KOLISS THEME - Thème par défaut
+// ==========================================================================
+
+@use '../abstracts/variables' as *;
+
+:root,
+[data-theme="light"] {
+  --theme-primary: #{$color-primary};
+  --theme-primary-light: #{$color-primary-light};
+  --theme-primary-dark: #{$color-primary-dark};
+  
+  --theme-secondary: #{$color-secondary};
+  --theme-secondary-light: #{$color-secondary-light};
+  --theme-secondary-dark: #{$color-secondary-dark};
+  
+  --theme-bg-primary: #{$color-bg-light};
+  --theme-bg-secondary: #{$color-bg-secondary};
+  --theme-bg-surface: #{$color-bg-white};
+  
+  --theme-text-primary: #{$color-text-primary};
+  --theme-text-secondary: #{$color-text-secondary};
+  --theme-text-muted: #{$color-text-muted};
+  --theme-text-inverse: #{$color-text-inverse};
+  
+  --theme-success: #{$color-success};
+  --theme-warning: #{$color-warning};
+  --theme-error: #{$color-error};
+  --theme-info: #{$color-info};
+}

@@ -1,0 +1,472 @@
+<!-- Bandeau haut : Titre et fil d'Ariane -->
+<section class="border-b border-white/10 bg-koliss-primary text-white">
+  <div class="k-container py-10 md:py-14">
+    <app-breadcrumb [items]="breadcrumb" />
+    <h1 class="mt-5 text-3xl font-extrabold leading-tight tracking-tight md:text-4xl">
+      Demandez votre devis <span class="text-koliss-secondary">gratuit</span>
+    </h1>
+    <p class="mt-3 max-w-2xl text-base text-white/75 md:text-lg">
+      Remplissez le formulaire ci-dessous. Votre agent dédié KOLISS vous contacte sous 2h et vous transmet un devis usine comparatif sous 48h.
+    </p>
+  </div>
+</section>
+
+<!-- Contenu principal : Formulaire + Sidebar -->
+<main class="py-12 md:py-16">
+  <div class="k-container">
+    <div class="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-12">
+      <!-- Colonne principale (Formulaire ou Écran de succès) -->
+      <div class="lg:col-span-8">
+        @if (!isSubmitted()) {
+          <div class="rounded-2xl border border-koliss-border bg-white p-6 shadow-koliss-card md:p-10">
+            <div class="border-b border-koliss-border pb-6">
+              <h2 class="text-2xl font-extrabold text-koliss-text">
+                Votre demande de sourcing
+              </h2>
+              <p class="mt-2 text-sm text-koliss-text-muted">
+                Plus votre description est précise, plus nos offres seront compétitives. Décrivez vos produits, quantités cibles et exigences de qualité.
+              </p>
+            </div>
+
+            <form [formGroup]="form" (ngSubmit)="submit()" class="mt-8 space-y-8">
+              <!-- Section 1 : Informations de contact -->
+              <div class="space-y-4">
+                <h3 class="flex items-center gap-2 text-base font-bold text-koliss-primary">
+                  <i class="pi pi-user text-koliss-secondary" aria-hidden="true"></i>
+                  1. Vos informations professionnelles
+                </h3>
+
+                <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  <app-form-field label="Prénom" fieldId="q-first-name" [control]="form.controls.firstName" required>
+                    <input
+                      id="q-first-name"
+                      type="text"
+                      class="k-input"
+                      placeholder="Mamadou"
+                      formControlName="firstName"
+                    />
+                  </app-form-field>
+
+                  <app-form-field label="Nom" fieldId="q-last-name" [control]="form.controls.lastName" required>
+                    <input
+                      id="q-last-name"
+                      type="text"
+                      class="k-input"
+                      placeholder="Diallo"
+                      formControlName="lastName"
+                    />
+                  </app-form-field>
+                </div>
+
+                <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  <app-form-field label="Email professionnel" fieldId="q-email" [control]="form.controls.email" required>
+                    <input
+                      id="q-email"
+                      type="email"
+                      class="k-input"
+                      placeholder="mamadou@monentreprise.com"
+                      formControlName="email"
+                    />
+                  </app-form-field>
+
+                  <app-form-field label="Téléphone / WhatsApp" fieldId="q-phone" [control]="form.controls.phone" required>
+                    <input
+                      id="q-phone"
+                      type="tel"
+                      class="k-input"
+                      placeholder="+221 77 000 00 00"
+                      formControlName="phone"
+                    />
+                  </app-form-field>
+                </div>
+
+                <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  <app-form-field label="Nom de l'entreprise" fieldId="q-company">
+                    <input
+                      id="q-company"
+                      type="text"
+                      class="k-input"
+                      placeholder="Ex : Diallo & Frères SARL"
+                      formControlName="company"
+                    />
+                  </app-form-field>
+
+                  <app-form-field label="Poste / Fonction" fieldId="q-position">
+                    <input
+                      id="q-position"
+                      type="text"
+                      class="k-input"
+                      placeholder="Gérant, Directeur des achats…"
+                      formControlName="position"
+                    />
+                  </app-form-field>
+                </div>
+              </div>
+
+              <!-- Section 2 : Destination & Logistique -->
+              <div class="space-y-4 border-t border-koliss-border pt-8">
+                <h3 class="flex items-center gap-2 text-base font-bold text-koliss-primary">
+                  <i class="pi pi-map-marker text-koliss-secondary" aria-hidden="true"></i>
+                  2. Destination & Mode de transport
+                </h3>
+
+                <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  <app-form-field label="Pays de destination" fieldId="q-country" [control]="form.controls.country" required>
+                    <select id="q-country" class="k-input" formControlName="country">
+                      <option value="" disabled selected>Sélectionnez votre pays</option>
+                      @for (c of countries; track c) {
+                        <option [value]="c">{{ c }}</option>
+                      }
+                    </select>
+                  </app-form-field>
+
+                  <app-form-field label="Mode de transport souhaité" fieldId="q-delivery">
+                    <select id="q-delivery" class="k-input" formControlName="deliveryMode">
+                      <option value="Aérien (7–10 jours)">✈️ Aérien Express (7–10 jours)</option>
+                      <option value="Maritime (25–35 jours)">🚢 Maritime Économique (25–35 jours)</option>
+                      <option value="Pas de préférence">📦 Pas de préférence (selon devis)</option>
+                    </select>
+                  </app-form-field>
+                </div>
+              </div>
+
+              <!-- Section 3 : Catégories de produits -->
+              <div class="space-y-4 border-t border-koliss-border pt-8">
+                <h3 class="flex items-center gap-2 text-base font-bold text-koliss-primary">
+                  <i class="pi pi-th-large text-koliss-secondary" aria-hidden="true"></i>
+                  3. Secteurs & Catégories concernés
+                </h3>
+                <p class="text-xs text-koliss-text-soft">Sélectionnez les catégories correspondant à vos produits (facultatif mais recommandé) :</p>
+
+                <div class="flex flex-wrap gap-2.5">
+                  @for (cat of categoryOptions; track cat.id) {
+                    <button
+                      type="button"
+                      class="inline-flex items-center gap-2 rounded-xl border px-3.5 py-2 text-xs font-bold transition-all"
+                      [class]="
+                        isCategorySelected(cat.id)
+                          ? 'border-koliss-primary bg-koliss-primary text-white shadow-sm ring-2 ring-koliss-secondary/40'
+                          : 'border-koliss-border bg-koliss-bg text-koliss-text hover:border-koliss-primary hover:bg-white'
+                      "
+                      (click)="toggleCategory(cat.id)"
+                    >
+                      <i class="pi text-sm" [class]="cat.icon" aria-hidden="true"></i>
+                      <span>{{ cat.label }}</span>
+                      @if (isCategorySelected(cat.id)) {
+                        <i class="pi pi-check text-[10px]" aria-hidden="true"></i>
+                      }
+                    </button>
+                  }
+                </div>
+              </div>
+
+              <!-- Section 4 : Liste des produits (dynamique) -->
+              <div class="space-y-4 border-t border-koliss-border pt-8">
+                <div class="flex items-center justify-between">
+                  <h3 class="flex items-center gap-2 text-base font-bold text-koliss-primary">
+                    <i class="pi pi-box text-koliss-secondary" aria-hidden="true"></i>
+                    4. Votre liste de produits <span class="text-koliss-error">*</span>
+                  </h3>
+                  <span class="text-xs text-koliss-text-soft">Au moins 1 produit</span>
+                </div>
+
+                <div formArrayName="products" class="space-y-3">
+                  @for (row of productRows.controls; track $index; let i = $index) {
+                    <div
+                      [formGroupName]="i"
+                      class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 rounded-xl border border-koliss-border bg-koliss-bg/40 p-3"
+                    >
+                      <div class="flex-1">
+                        <input
+                          type="text"
+                          class="k-input text-sm"
+                          placeholder="Nom du produit ou référence (ex: Panneau solaire 400W)..."
+                          formControlName="name"
+                          aria-label="Nom du produit"
+                        />
+                      </div>
+                      <div class="w-full sm:w-32">
+                        <input
+                          type="number"
+                          class="k-input text-sm"
+                          placeholder="Quantité"
+                          min="1"
+                          formControlName="quantity"
+                          aria-label="Quantité"
+                        />
+                      </div>
+                      <div class="w-full sm:w-36">
+                        <input
+                          type="text"
+                          class="k-input text-sm"
+                          placeholder="Unité (ex: pièces)"
+                          formControlName="unit"
+                          aria-label="Unité"
+                        />
+                      </div>
+                      <div>
+                        <button
+                          type="button"
+                          class="flex h-11 w-11 items-center justify-center rounded-lg border border-koliss-border bg-white text-koliss-text-muted hover:border-koliss-error hover:bg-koliss-error/10 hover:text-koliss-error disabled:cursor-not-allowed disabled:opacity-30"
+                          [disabled]="productRows.length <= 1"
+                          (click)="removeProductRow(i)"
+                          aria-label="Supprimer ce produit"
+                        >
+                          <i class="pi pi-trash text-sm" aria-hidden="true"></i>
+                        </button>
+                      </div>
+                    </div>
+                  }
+                </div>
+
+                <button
+                  type="button"
+                  class="inline-flex items-center gap-2 rounded-xl border border-dashed border-koliss-primary/40 bg-koliss-primary/5 px-4 py-2.5 text-xs font-bold text-koliss-primary transition-colors hover:bg-koliss-primary/10"
+                  (click)="addProductRow()"
+                >
+                  <i class="pi pi-plus" aria-hidden="true"></i>
+                  Ajouter un produit supplémentaire
+                </button>
+              </div>
+
+              <!-- Section 5 : Précisions complémentaires & Budget -->
+              <div class="space-y-4 border-t border-koliss-border pt-8">
+                <h3 class="flex items-center gap-2 text-base font-bold text-koliss-primary">
+                  <i class="pi pi-comment text-koliss-secondary" aria-hidden="true"></i>
+                  5. Précisions complémentaires & Budget
+                </h3>
+
+                <app-form-field
+                  label="Exigences de qualité, packaging, délais ou spécifications techniques"
+                  fieldId="q-notes"
+                >
+                  <textarea
+                    id="q-notes"
+                    class="k-input"
+                    rows="3"
+                    placeholder="Ex : Panneaux certifiés CE et IEC obligatoires, emballage carton renforcé avec notre logo, livraison souhaitée avant fin novembre..."
+                    formControlName="notes"
+                  ></textarea>
+                </app-form-field>
+
+                <app-form-field label="Budget estimé global (optionnel)" fieldId="q-budget">
+                  <select id="q-budget" class="k-input" formControlName="budget">
+                    @for (b of budgetOptions; track b) {
+                      <option [value]="b">{{ b }}</option>
+                    }
+                  </select>
+                </app-form-field>
+              </div>
+
+              <!-- Bouton de soumission -->
+              <div class="border-t border-koliss-border pt-6 space-y-3">
+                <button
+                  type="submit"
+                  appButton
+                  variant="yellow"
+                  size="lg"
+                  class="w-full text-center justify-center text-base"
+                  [disabled]="isSubmitting()"
+                >
+                  @if (isSubmitting()) {
+                    <i class="pi pi-spin pi-spinner" aria-hidden="true"></i>
+                    Transmission de votre demande en cours...
+                  } @else {
+                    <i class="pi pi-send" aria-hidden="true"></i>
+                    Envoyer ma demande de devis gratuit
+                  }
+                </button>
+                <p class="text-center text-xs text-koliss-text-soft">
+                  🔒 Données strictement confidentielles · Sans engagement d'achat · Réponse garantie sous 48h
+                </p>
+              </div>
+            </form>
+          </div>
+        } @else {
+          <!-- Écran de confirmation de succès -->
+          <div class="rounded-2xl border border-emerald-200 bg-white p-8 text-center shadow-koliss-card md:p-14 space-y-6">
+            <div class="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-emerald-100 text-emerald-600">
+              <i class="pi pi-check-circle text-4xl" aria-hidden="true"></i>
+            </div>
+
+            <div class="space-y-2">
+              <span class="inline-block rounded-full bg-emerald-50 px-3 py-1 text-xs font-bold text-emerald-700">
+                Réf. dossier : {{ submissionResult()?.reference }}
+              </span>
+              <h2 class="text-2xl font-extrabold text-koliss-text md:text-3xl">
+                Demande de devis transmise avec succès !
+              </h2>
+              <p class="mx-auto max-w-lg text-sm leading-relaxed text-koliss-text-muted">
+                Votre conseiller sourcing dédié à Dakar et notre équipe sur place en Chine ont bien reçu votre dossier. Vous serez contacté par WhatsApp et email sous 48 heures ouvrées avec une sélection d'usines et des devis comparatifs.
+              </p>
+            </div>
+
+            <div class="rounded-2xl bg-koliss-bg p-6 text-left space-y-3">
+              <h4 class="text-xs font-bold uppercase tracking-wider text-koliss-primary">
+                Prochaines étapes de votre dossier
+              </h4>
+              <ul class="space-y-2 text-xs text-koliss-text">
+                <li class="flex items-center gap-2">
+                  <i class="pi pi-check text-emerald-600" aria-hidden="true"></i>
+                  Attribution de votre agent francophone dédié sous 2h.
+                </li>
+                <li class="flex items-center gap-2">
+                  <i class="pi pi-check text-emerald-600" aria-hidden="true"></i>
+                  Négociation tarifaire et vérification des certificats usines en Chine.
+                </li>
+                <li class="flex items-center gap-2">
+                  <i class="pi pi-check text-emerald-600" aria-hidden="true"></i>
+                  Réception de votre tableau comparatif clé en main avec simulation de fret.
+                </li>
+              </ul>
+            </div>
+
+            <div class="flex flex-wrap items-center justify-center gap-3 pt-4">
+              <a appButton variant="navy" size="lg" routerLink="/boutique">
+                <i class="pi pi-th-large" aria-hidden="true"></i>
+                Explorer les références en boutique
+              </a>
+              <button
+                type="button"
+                appButton
+                variant="outline-navy"
+                size="lg"
+                (click)="resetForm()"
+              >
+                Faire une nouvelle demande
+              </button>
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- Colonne latérale (Processus, Garanties, Contacts) -->
+      <aside class="space-y-6 lg:col-span-4">
+        <!-- Carte Comment ça marche -->
+        <div class="rounded-2xl border border-koliss-border bg-white p-6 shadow-koliss-card space-y-4">
+          <h3 class="flex items-center gap-2 text-base font-bold text-koliss-primary">
+            <i class="pi pi-bolt text-koliss-secondary" aria-hidden="true"></i>
+            Comment ça marche ?
+          </h3>
+
+          <div class="space-y-4 text-xs">
+            <div class="flex items-start gap-3">
+              <div class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-koliss-primary text-white font-bold">
+                1
+              </div>
+              <div>
+                <p class="font-bold text-koliss-text">Vous envoyez votre liste</p>
+                <p class="text-koliss-text-soft">Gratuit et sans engagement dès aujourd'hui.</p>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-3">
+              <div class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-koliss-secondary text-koliss-primary font-bold">
+                2
+              </div>
+              <div>
+                <p class="font-bold text-koliss-text">Votre agent vous contacte</p>
+                <p class="text-koliss-text-soft">Sous 2h par WhatsApp pour clarifier le cahier des charges.</p>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-3">
+              <div class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-koliss-primary-dark text-white font-bold">
+                3
+              </div>
+              <div>
+                <p class="font-bold text-koliss-text">Vous recevez vos devis</p>
+                <p class="text-koliss-text-soft">Sous 48h : comparatif 2 à 4 fabricants vérifiés.</p>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-3">
+              <div class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-koliss-primary text-koliss-secondary font-bold">
+                4
+              </div>
+              <div>
+                <p class="font-bold text-koliss-text">Production & inspection</p>
+                <p class="text-koliss-text-soft">Contrôle qualité photos et sécurisation escrow.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Carte Garanties -->
+        <div class="rounded-2xl border border-koliss-border bg-white p-6 shadow-koliss-card space-y-4">
+          <h3 class="flex items-center gap-2 text-base font-bold text-koliss-primary">
+            <i class="pi pi-shield text-koliss-secondary" aria-hidden="true"></i>
+            Nos engagements & garanties
+          </h3>
+
+          <ul class="space-y-2.5 text-xs text-koliss-text">
+            <li class="flex items-start gap-2.5">
+              <i class="pi pi-check text-koliss-primary font-bold mt-0.5" aria-hidden="true"></i>
+              <span><strong>Devis 100% gratuit</strong> sans obligation d'achat.</span>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <i class="pi pi-check text-koliss-primary font-bold mt-0.5" aria-hidden="true"></i>
+              <span><strong>Paiement sous séquestre (escrow)</strong> : l'usine n'est payée qu'après validation.</span>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <i class="pi pi-check text-koliss-primary font-bold mt-0.5" aria-hidden="true"></i>
+              <span><strong>Rapport photo & vidéo</strong> systématique avant départ conteneur.</span>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <i class="pi pi-check text-koliss-primary font-bold mt-0.5" aria-hidden="true"></i>
+              <span><strong>Garantie non-conformité</strong> : prise en charge du remplacement ou remboursement.</span>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <i class="pi pi-check text-koliss-primary font-bold mt-0.5" aria-hidden="true"></i>
+              <span><strong>Agent dédié francophone</strong> joignable 6j/7 sur WhatsApp.</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Carte Contact direct -->
+        <div class="rounded-2xl border border-koliss-border bg-koliss-bg p-6 shadow-koliss-card space-y-4">
+          <h3 class="text-sm font-bold text-koliss-primary">
+            Besoin d'une réponse immédiate ?
+          </h3>
+
+          <div class="space-y-3 text-xs">
+            <a
+              [href]="whatsappUrl"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex items-center gap-3 rounded-xl border border-emerald-200 bg-white p-3 transition-colors hover:bg-emerald-50"
+            >
+              <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-emerald-600 text-white">
+                <i class="pi pi-whatsapp" aria-hidden="true"></i>
+              </div>
+              <div>
+                <p class="font-bold text-koliss-text">WhatsApp Business Direct</p>
+                <p class="text-koliss-text-soft">{{ contact.phone }}</p>
+              </div>
+            </a>
+
+            <div class="flex items-center gap-3 rounded-xl border border-koliss-border bg-white p-3">
+              <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-koliss-primary text-white">
+                <i class="pi pi-envelope" aria-hidden="true"></i>
+              </div>
+              <div>
+                <p class="font-bold text-koliss-text">Email Sourcing</p>
+                <p class="text-koliss-text-soft">{{ contact.email }}</p>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-3 rounded-xl border border-koliss-border bg-white p-3">
+              <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-koliss-bg-2 text-koliss-primary">
+                <i class="pi pi-clock" aria-hidden="true"></i>
+              </div>
+              <div>
+                <p class="font-bold text-koliss-text">Horaires de permanence</p>
+                <p class="text-koliss-text-soft">{{ contact.hours }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</main>

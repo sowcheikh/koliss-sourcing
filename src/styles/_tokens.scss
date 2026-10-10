@@ -1,0 +1,81 @@
+// ============================================================
+//  KOLISS — Design Tokens (partagés hub + apps)
+//  Charte officielle koliss.com (Manrope · Navy #203C89 · Yellow #FFCC00)
+// ============================================================
+
+:root {
+  // --- Brand : bleu KOLISS ---
+  --k-navy: #203c89;
+  --k-navy-dark: #162a61;
+  --k-navy-mid: #2a4aa8;
+
+  // --- Brand : jaune KOLISS ---
+  --k-yellow: #ffcc00;
+  --k-yellow-dark: #e0b400;
+  --k-yellow-light: #ffe066;
+  --k-yellow-soft: #fff5cc;
+
+  // --- Accents services (hub multi-apps) ---
+  --k-svc-fleet: #f59e0b;
+  --k-svc-fleet-dark: #b45309;
+  --k-svc-fleet-bg: #fef3c7;
+  --k-svc-pay: #10b981;
+  --k-svc-pay-dark: #047857;
+  --k-svc-pay-bg: #d1fae5;
+  --k-svc-express: #203c89;
+  --k-svc-express-dark: #162a61;
+  --k-svc-express-bg: #e8eefc;
+  --k-svc-sourcing: #8b5cf6;
+  --k-svc-sourcing-dark: #6d28d9;
+  --k-svc-sourcing-bg: #ede9fe;
+
+  // --- Surfaces ---
+  --k-bg: #fdfaef; // fond crème koliss.com
+  --k-bg-2: #f3efe0;
+  --k-surface: #ffffff;
+  --k-surface-dark: #0b1628;
+  --k-surface-footer: #0d1622;
+
+  // --- Texte ---
+  --k-text: #111008;
+  --k-text-muted: #585751;
+  --k-text-soft: #6b7280;
+  --k-on-navy: rgba(255, 255, 255, 0.92);
+  --k-on-navy-muted: rgba(255, 255, 255, 0.6);
+
+  // --- Bordures ---
+  --k-border: #e6e2d4;
+  --k-border-strong: #d9d3c0;
+
+  // --- Statuts flotte ---
+  --k-status-moving: #60a5fa;
+  --k-status-ok: #22c55e;
+  --k-status-idle: #facc15;
+  --k-status-alert: #ef4444;
+  --k-status-offline: #94a3b8;
+
+  // --- Rayons ---
+  --k-radius-sm: 6px;
+  --k-radius: 10px;
+  --k-radius-lg: 14px;
+  --k-radius-xl: 16px;
+  --k-radius-pill: 999px;
+
+  // --- Ombres ---
+  --k-shadow-sm: 0 2px 8px rgba(22, 32, 64, 0.08);
+  --k-shadow: 0 4px 24px rgba(22, 32, 64, 0.1);
+  --k-shadow-lg: 0 24px 60px rgba(0, 0, 0, 0.3);
+
+  // --- Layout ---
+  --k-container: 1440px;
+  --k-header-h: 100px;
+
+  // --- Typographie (Identique à colisage_front) ---
+  --k-font: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-family-primary: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --color-font-family-primary: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --k-font-mono: 'Fira Code', 'Monaco', 'Consolas', monospace;
+
+  // --- Transitions ---
+  --k-transition: 0.2s ease;
+}

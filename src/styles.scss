@@ -1,0 +1,25 @@
+// ==========================================================================
+// KOLISS SOURCING — Point d'entrée global des styles
+// Même design system que colisage_front / hub koliss (Manrope · #203C89 · #FFCC00)
+// ==========================================================================
+
+// 1. Design system : variables, thèmes, tokens, base, primitives, composants UI
+@use './styles/abstracts' as *;
+@use './styles/themes';
+@use './styles/tokens';
+@use './styles/base';
+@use './styles/utilities';
+@use './styles/components';
+
+// 2. Tailwind CSS (primeicons est chargé via angular.json)
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-color: var(--k-bg);
+}
+
+[hidden] {
+  display: none !important;
+}

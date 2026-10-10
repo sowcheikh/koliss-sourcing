@@ -1,0 +1,83 @@
+<article
+  class="group relative flex overflow-hidden rounded-koliss border border-koliss-border bg-white shadow-koliss-card transition-all duration-300 hover:-translate-y-1 hover:shadow-lg focus-within:ring-2 focus-within:ring-koliss-primary"
+  [class]="layout() === 'list' ? 'flex-col sm:flex-row' : 'flex-col'"
+>
+  <!-- Visuel -->
+  <div
+    class="relative flex items-center justify-center"
+    [class]="[toneClasses(), layout() === 'list' ? 'h-44 sm:h-auto sm:w-56 sm:shrink-0' : 'h-44']"
+  >
+    <i class="pi text-6xl" [class]="product().icon" aria-hidden="true"></i>
+    <span
+      class="absolute left-3 top-3 rounded-full bg-koliss-primary px-2.5 py-1 text-[11px] font-bold text-white"
+    >
+      {{ moqLabel() }}
+    </span>
+    @if (product().promo) {
+      <span
+        class="absolute right-3 top-3 rounded-full bg-koliss-error px-2.5 py-1 text-[11px] font-bold text-white"
+      >
+        {{ product().promo }}
+      </span>
+    }
+  </div>
+
+  <!-- Contenu -->
+  <div class="flex flex-1 flex-col">
+    <div class="flex-1 p-5">
+      <p class="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide text-koliss-text-soft">
+        <i class="pi text-xs" [class]="category()?.icon" aria-hidden="true"></i>
+        {{ category()?.shortLabel }}
+      </p>
+      <h3 class="mt-2 text-base font-bold leading-snug text-koliss-text">
+        <a
+          [routerLink]="['/boutique', product().id]"
+          class="outline-none after:absolute after:inset-0 after:content-['']"
+        >
+          {{ product().name }}
+        </a>
+      </h3>
+      <p class="mt-3 flex flex-wrap items-baseline gap-x-2">
+        <span class="text-xs text-koliss-text-soft">À partir de</span>
+        <span class="text-2xl font-extrabold text-koliss-primary">{{ priceLabel() }}</span>
+        <span class="text-sm text-koliss-text-soft">/ {{ unitLabel() }}</span>
+      </p>
+      <p class="mt-3 flex flex-wrap items-center gap-x-2 text-xs text-koliss-text-muted">
+        <span class="inline-flex items-center gap-1">
+          <i class="pi pi-star-fill text-koliss-secondary" aria-hidden="true"></i>
+          {{ product().rating }}
+        </span>
+        <span>·</span>
+        <strong>{{ product().reviewCount }} avis</strong>
+        <span>·</span>
+        <span class="inline-flex items-center gap-1.5">
+          <img
+            [src]="'assets/flags/' + product().origin.countryCode + '.png'"
+            [alt]="product().origin.country"
+            class="h-3 w-4 rounded-[2px] object-cover"
+            loading="lazy"
+          />
+          {{ product().origin.city }}
+        </span>
+      </p>
+    </div>
+
+    <div class="relative z-10 flex gap-2 border-t border-koliss-border p-4">
+      <a
+        appButton
+        variant="yellow"
+        size="sm"
+        class="flex-1"
+        routerLink="/devis"
+        [queryParams]="{ produit: product().id }"
+      >
+        <i class="pi pi-file-edit" aria-hidden="true"></i>
+        Demander un devis
+      </a>
+      <a appButton variant="outline-navy" size="sm" [routerLink]="['/boutique', product().id]">
+        Voir
+        <i class="pi pi-arrow-right text-xs" aria-hidden="true"></i>
+      </a>
+    </div>
+  </div>
+</article>

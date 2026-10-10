@@ -1,0 +1,159 @@
+// ============================================================
+//  KOLISS SOURCING — Composants UI partagés (classes globales)
+//  Étend les primitives `k-*` du design system (_utilities.scss)
+//  Tokens : voir _tokens.scss — aucune valeur de couleur en dur.
+// ============================================================
+
+// --- Boutons : variantes complémentaires (fond clair) ---------
+.k-btn--outline-navy {
+  background: transparent;
+  color: var(--k-navy);
+  border-color: var(--k-navy);
+
+  &:hover:not(:disabled) {
+    background: var(--k-navy);
+    color: #fff;
+  }
+}
+
+.k-btn--sm {
+  padding: 9px 18px;
+  font-size: 14px;
+}
+
+.k-btn[aria-busy='true'] {
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+.k-spinner {
+  width: 1em;
+  height: 1em;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: k-spin 0.7s linear infinite;
+}
+
+@keyframes k-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// --- Titres : accent <em> (jaune KOLISS, remplace l'italique orange de la maquette)
+.k-section-title em,
+.k-accent {
+  font-style: normal;
+  background: linear-gradient(transparent 62%, var(--k-yellow) 62%);
+}
+
+.k-on-dark .k-section-title,
+.k-on-dark .k-section-title em {
+  color: #fff;
+}
+
+.k-on-dark .k-section-title em {
+  background: none;
+  color: var(--k-yellow);
+}
+
+// --- Formulaires ----------------------------------------------
+.k-label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--k-text);
+}
+
+.k-required {
+  color: var(--k-status-alert);
+}
+
+.k-input {
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 15px;
+  color: var(--k-text);
+  background: var(--k-surface);
+  border: 1px solid var(--k-border-strong);
+  border-radius: var(--k-radius-sm);
+  transition:
+    border-color var(--k-transition),
+    box-shadow var(--k-transition);
+
+  &::placeholder {
+    color: var(--k-text-soft);
+    opacity: 0.8;
+  }
+
+  &:hover:not(:disabled) {
+    border-color: var(--k-navy-mid);
+  }
+
+  &:focus-visible {
+    outline: none;
+    border-color: var(--k-navy);
+    box-shadow: 0 0 0 3px rgba(32, 60, 137, 0.18);
+  }
+
+  &:disabled {
+    background: var(--k-bg-2);
+    cursor: not-allowed;
+  }
+
+  &.is-invalid,
+  &.ng-invalid.ng-touched {
+    border-color: var(--k-status-alert);
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.12);
+  }
+}
+
+textarea.k-input {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.k-field-error {
+  margin-top: 4px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--k-status-alert);
+}
+
+// --- Surfaces -------------------------------------------------
+.k-card {
+  background: var(--k-surface);
+  border: 1px solid var(--k-border);
+  border-radius: var(--k-radius-lg);
+  box-shadow: var(--k-shadow-sm);
+}
+
+// --- Chips / filtres ------------------------------------------
+.k-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  font-size: 13.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  color: var(--k-text-muted);
+  background: var(--k-surface);
+  border: 1px solid var(--k-border-strong);
+  border-radius: var(--k-radius-pill);
+  cursor: pointer;
+  transition: all var(--k-transition);
+
+  &:hover {
+    color: var(--k-navy);
+    border-color: var(--k-navy);
+  }
+
+  &.is-active {
+    color: #fff;
+    background: var(--k-navy);
+    border-color: var(--k-navy);
+  }
+}

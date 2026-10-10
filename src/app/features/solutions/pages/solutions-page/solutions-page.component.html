@@ -1,0 +1,214 @@
+<!-- Hero Solutions -->
+<app-page-hero
+  [breadcrumb]="breadcrumb"
+  subtitle="Du petit commerçant au grand groupe industriel, KOLISS Sourcing adapte ses services à vos volumes, budgets et exigences de rentabilité."
+>
+  Des <em>solutions de sourcing</em> adaptées à votre entreprise
+</app-page-hero>
+
+<!-- Formules de Sourcing -->
+<section class="py-16 md:py-24">
+  <div class="k-container">
+    <div class="mx-auto max-w-2xl text-center">
+      <span class="k-badge k-badge-secondary">Nos services</span>
+      <h2 class="mt-3 text-3xl font-extrabold text-koliss-text md:text-4xl">
+        Choisissez votre <span class="text-koliss-primary">formule d'accompagnement</span>
+      </h2>
+      <p class="mt-3 text-base text-koliss-text-muted">
+        Transparence tarifaire absolue, zéro coût caché et prise en charge intégrale de la chaîne logistique.
+      </p>
+    </div>
+
+    <div class="mt-12 grid grid-cols-1 gap-8 md:grid-cols-3">
+      @for (offer of offers; track offer.id) {
+        <article
+          class="relative flex flex-col justify-between rounded-2xl border bg-white shadow-koliss-card transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+          [class]="
+            offer.popular
+              ? 'border-koliss-secondary ring-2 ring-koliss-secondary/40'
+              : 'border-koliss-border'
+          "
+        >
+          <!-- Ruban Populaire -->
+          @if (offer.popular) {
+            <div
+              class="absolute -top-3.5 left-1/2 -translate-x-1/2 rounded-full bg-koliss-primary px-4 py-1 text-xs font-extrabold uppercase tracking-wider text-koliss-secondary shadow-md"
+            >
+              ⭐ Formule recommandée PME
+            </div>
+          }
+
+          <!-- Haut de la carte -->
+          <div class="p-6 md:p-8" [class.pt-10]="offer.popular">
+            <div class="flex items-center justify-between">
+              <div
+                class="flex h-14 w-14 items-center justify-center rounded-2xl"
+                [class]="
+                  offer.popular
+                    ? 'bg-koliss-secondary-soft text-koliss-primary'
+                    : 'bg-koliss-bg-2 text-koliss-primary'
+                "
+              >
+                <i class="pi text-2xl" [class]="offer.icon" aria-hidden="true"></i>
+              </div>
+              <span
+                class="rounded-full px-3 py-1 text-xs font-bold"
+                [class]="
+                  offer.popular
+                    ? 'bg-koliss-secondary text-koliss-primary'
+                    : 'bg-koliss-primary/10 text-koliss-primary'
+                "
+              >
+                {{ offer.badge }}
+              </span>
+            </div>
+
+            <h3 class="mt-6 text-xl font-extrabold text-koliss-text">
+              {{ offer.name }}
+            </h3>
+            <p class="mt-3 text-sm leading-relaxed text-koliss-text-muted">
+              {{ offer.description }}
+            </p>
+
+            <!-- Liste des fonctionnalités incluses -->
+            <ul class="mt-6 space-y-3 border-t border-koliss-border pt-6 text-sm">
+              @for (feature of offer.features; track feature) {
+                <li class="flex items-start gap-3 text-koliss-text">
+                  <i class="pi pi-check text-xs font-bold text-koliss-primary mt-1" aria-hidden="true"></i>
+                  <span>{{ feature }}</span>
+                </li>
+              }
+            </ul>
+          </div>
+
+          <!-- Bas de carte avec commission et CTA -->
+          <div class="border-t border-koliss-border bg-koliss-bg/60 p-6 md:p-8">
+            <div class="mb-4">
+              <p class="text-xs font-medium uppercase tracking-wider text-koliss-text-soft">Tarification</p>
+              <p class="text-base font-extrabold text-koliss-primary">{{ offer.price }}</p>
+            </div>
+            <a
+              appButton
+              [variant]="offer.ctaVariant"
+              size="md"
+              class="w-full text-center justify-center"
+              routerLink="/devis"
+              [queryParams]="{ formule: offer.id }"
+            >
+              {{ offer.ctaLabel }}
+            </a>
+          </div>
+        </article>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Timeline : Processus de A à Z -->
+<section class="border-y border-koliss-border bg-koliss-bg py-16 md:py-24">
+  <div class="k-container">
+    <div class="mx-auto max-w-2xl text-center">
+      <span class="k-badge k-badge-primary">Processus éprouvé</span>
+      <h2 class="mt-3 text-3xl font-extrabold text-koliss-text md:text-4xl">
+        Votre commande sécurisée de <span class="text-koliss-primary">A à Z</span>
+      </h2>
+      <p class="mt-3 text-base text-koliss-text-muted">
+        Transparence totale à chaque étape. Votre agent dédié vous informe en temps réel avec photos et suivi WhatsApp.
+      </p>
+    </div>
+
+    <div class="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      @for (step of timeline; track step.number) {
+        <div
+          class="relative flex flex-col justify-between rounded-2xl border border-koliss-border bg-white p-6 shadow-koliss-card transition-all duration-200 hover:border-koliss-primary"
+        >
+          <div>
+            <div class="flex items-center justify-between">
+              <div
+                class="flex h-12 w-12 items-center justify-center rounded-xl bg-koliss-primary text-white shadow-sm font-bold"
+              >
+                <i class="pi text-xl" [class]="step.icon" aria-hidden="true"></i>
+              </div>
+              <span
+                class="flex h-8 w-8 items-center justify-center rounded-full bg-koliss-secondary text-xs font-extrabold text-koliss-primary"
+              >
+                #{{ step.number }}
+              </span>
+            </div>
+
+            <h3 class="mt-5 text-lg font-bold text-koliss-text">
+              {{ step.title }}
+            </h3>
+            <p class="mt-2 text-sm leading-relaxed text-koliss-text-muted">
+              {{ step.description }}
+            </p>
+          </div>
+
+          <div class="mt-6 border-t border-koliss-border/70 pt-4">
+            <span class="inline-block rounded-md bg-koliss-bg-2 px-2.5 py-1 text-xs font-bold text-koliss-primary">
+              {{ step.duration }}
+            </span>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Secteurs couverts -->
+<section class="py-16 md:py-24">
+  <div class="k-container">
+    <div class="mx-auto max-w-2xl text-center">
+      <span class="k-badge k-badge-secondary">Secteurs couverts</span>
+      <h2 class="mt-3 text-3xl font-extrabold text-koliss-text md:text-4xl">
+        Nous sourcions dans <span class="text-koliss-primary">tous vos secteurs d'activité</span>
+      </h2>
+      <p class="mt-3 text-base text-koliss-text-muted">
+        Bénéficiez de notre réseau de fabricants audités et qualifiés dans les plus grands pôles industriels d'Asie.
+      </p>
+    </div>
+
+    <div class="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      @for (sector of sectors; track sector.id) {
+        <a
+          [routerLink]="['/boutique']"
+          [queryParams]="{ cat: sector.categoryId }"
+          class="group rounded-2xl border border-koliss-border bg-white p-6 shadow-koliss-card transition-all duration-300 hover:-translate-y-1 hover:border-koliss-primary hover:shadow-lg"
+        >
+          <div
+            class="flex h-14 w-14 items-center justify-center rounded-2xl bg-koliss-bg-2 text-koliss-primary transition-colors group-hover:bg-koliss-primary group-hover:text-koliss-secondary"
+          >
+            <i class="pi text-2xl" [class]="sector.icon" aria-hidden="true"></i>
+          </div>
+
+          <h3 class="mt-4 text-lg font-bold text-koliss-text group-hover:text-koliss-primary">
+            {{ sector.name }}
+          </h3>
+          <p class="mt-2 text-sm leading-relaxed text-koliss-text-muted">
+            {{ sector.description }}
+          </p>
+
+          <div class="mt-4 flex items-center gap-1.5 text-xs font-bold text-koliss-primary group-hover:text-koliss-primary-light">
+            <span>Explorer les références</span>
+            <i class="pi pi-arrow-right text-[10px] transition-transform group-hover:translate-x-1" aria-hidden="true"></i>
+          </div>
+        </a>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Bannière CTA finale -->
+<app-cta-banner text="Un agent KOLISS vous rappelle sous 2h pour analyser vos besoins spécifiques et vous proposer la formule la plus adaptée.">
+  <span appCtaTitle>Discutons de votre <em>projet de sourcing</em></span>
+  <ng-container appCtaActions>
+    <a appButton variant="yellow" size="lg" routerLink="/devis">
+      <i class="pi pi-file-edit" aria-hidden="true"></i>
+      Demander un devis gratuit
+    </a>
+    <a appButton variant="white" size="lg" routerLink="/boutique">
+      <i class="pi pi-th-large" aria-hidden="true"></i>
+      Explorer la boutique
+    </a>
+  </ng-container>
+</app-cta-banner>

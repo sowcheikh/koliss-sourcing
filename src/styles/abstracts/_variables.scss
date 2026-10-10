@@ -1,0 +1,166 @@
+// ==========================================================================
+// KOLISS DESIGN TOKENS - Variables Centralisées
+// ==========================================================================
+// Ce fichier contient tous les tokens de design pour l'écosystème Koliss.
+// ==========================================================================
+
+// --------------------------------------------------------------------------
+// COULEURS - Palette de base
+// --------------------------------------------------------------------------
+
+// Couleurs primaires (Design System officiel KOLISS)
+$color-primary: #203C89;
+$color-primary-light: #2A4AA8; // --k-navy-mid
+$color-primary-dark: #162A61; // --k-navy-dark
+
+// Couleurs secondaires (Design System officiel KOLISS)
+$color-secondary: #FFCC00; // --k-yellow
+$color-secondary-light: #FFE066; // --k-yellow-light
+$color-secondary-dark: #E0B400; // --k-yellow-dark
+
+// Couleurs de fond
+$color-bg-light: #FDFAEF;
+$color-bg-secondary: #FFF5CC;
+$color-bg-white: #FFFFFF;
+$color-bg-dark: #1A1A1A;
+
+// Couleurs de texte
+$color-text-primary: #111008;
+$color-text-secondary: #585751;
+$color-text-muted: #9CA3AF;
+$color-text-inverse: #FFFFFF;
+
+// Couleurs d'état
+$color-success: #4CAF50;
+$color-success-light: #81C784;
+$color-success-dark: #388E3C;
+
+$color-warning: #FF9800;
+$color-warning-light: #FFB74D;
+$color-warning-dark: #F57C00;
+
+$color-error: #E53935;
+$color-error-light: #EF5350;
+$color-error-dark: #C62828;
+
+$color-info: #2196F3;
+$color-info-light: #64B5F6;
+$color-info-dark: #1976D2;
+
+// Couleurs neutres
+$color-neutral-50: #FAFAFA;
+$color-neutral-100: #F8FAFC;
+$color-neutral-200: #E2E8F0;
+$color-neutral-300: #CBD5E1;
+$color-neutral-400: #94A3B8;
+$color-neutral-500: #64748B;
+$color-neutral-600: #475569;
+$color-neutral-700: #334155;
+$color-neutral-800: #1E293B;
+$color-neutral-900: #0F172A;
+
+// Couleurs de bordure
+$color-border-light: #E0E0E0;
+$color-border-medium: #CBD5E1;
+$color-border-dark: #94A3B8;
+$color-border-focus: $color-primary;
+
+// --------------------------------------------------------------------------
+// TYPOGRAPHIE
+// --------------------------------------------------------------------------
+
+$font-family-primary: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+$font-family-mono: 'Fira Code', 'Monaco', 'Consolas', monospace;
+
+$font-size-xs: 0.75rem;     // 12px
+$font-size-sm: 0.875rem;    // 14px
+$font-size-base: 1rem;      // 16px
+$font-size-lg: 1.125rem;    // 18px
+$font-size-xl: 1.25rem;     // 20px
+$font-size-2xl: 1.5rem;     // 24px
+$font-size-3xl: 2rem;       // 32px
+$font-size-4xl: 2.5rem;     // 40px
+$font-size-5xl: 3rem;       // 48px
+$font-size-6xl: 3.75rem;    // 60px
+
+$font-weight-light: 300;
+$font-weight-normal: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+$font-weight-extrabold: 800;
+
+$line-height-none: 1;
+$line-height-tight: 1.25;
+$line-height-snug: 1.375;
+$line-height-normal: 1.5;
+$line-height-relaxed: 1.625;
+$line-height-loose: 2;
+
+// --------------------------------------------------------------------------
+// ESPACEMENTS & BORDURES
+// --------------------------------------------------------------------------
+
+$border-radius-sm: 4px;
+$border-radius-md: 8px;
+$border-radius-lg: 12px;
+$border-radius-xl: 16px;
+$border-radius-full: 9999px;
+$border-radius-koliss: $border-radius-md;
+
+$shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+$shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+$shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+$shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+
+$shadow-koliss-primary: 0 4px 12px rgba(255, 204, 0, 0.3);
+$shadow-koliss-hover: 0 6px 20px rgba(255, 204, 0, 0.4);
+$shadow-koliss-card: 0 2px 8px rgba(0, 0, 0, 0.08);
+
+$breakpoint-sm: 640px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 1024px;
+$breakpoint-xl: 1280px;
+$breakpoint-2xl: 1536px;
+
+$breakpoints: (
+  'sm': $breakpoint-sm,
+  'md': $breakpoint-md,
+  'lg': $breakpoint-lg,
+  'xl': $breakpoint-xl,
+  '2xl': $breakpoint-2xl
+);
+
+// --------------------------------------------------------------------------
+// CSS CUSTOM PROPERTIES
+// --------------------------------------------------------------------------
+
+:root {
+  --color-primary: #{$color-primary};
+  --color-primary-light: #{$color-primary-light};
+  --color-primary-dark: #{$color-primary-dark};
+  
+  --color-secondary: #{$color-secondary};
+  --color-secondary-light: #{$color-secondary-light};
+  --color-secondary-dark: #{$color-secondary-dark};
+  
+  --color-bg-light: #{$color-bg-light};
+  --color-bg-secondary: #{$color-bg-secondary};
+  --color-bg-white: #{$color-bg-white};
+  
+  --color-text-primary: #{$color-text-primary};
+  --color-text-secondary: #{$color-text-secondary};
+  --color-text-muted: #{$color-text-muted};
+  --color-text-inverse: #{$color-text-inverse};
+  
+  --font-family-primary: #{$font-family-primary};
+  --font-family-mono: #{$font-family-mono};
+  
+  --border-radius-sm: #{$border-radius-sm};
+  --border-radius-md: #{$border-radius-md};
+  --border-radius-lg: #{$border-radius-lg};
+  
+  --shadow-sm: #{$shadow-sm};
+  --shadow-md: #{$shadow-md};
+  --shadow-lg: #{$shadow-lg};
+}

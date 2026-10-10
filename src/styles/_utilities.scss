@@ -1,0 +1,177 @@
+// ============================================================
+//  KOLISS HUB — Utilities & Primitives (Identique colisage_front)
+//  Charte typographique et visuelle stricte de colisage_front
+// ============================================================
+
+.k-container {
+  max-width: var(--k-container, 1440px);
+  margin: 0 auto;
+  padding: 0 26px;
+}
+
+.k-section {
+  padding: 80px 0;
+  background-color: var(--k-bg, #FDFAEF);
+}
+
+// --- Eyebrow tag ---
+.k-tag {
+  display: inline-block;
+  padding: 6px 14px;
+  background: var(--k-yellow, #FFCC00);
+  color: #111008;
+  font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  border-radius: var(--k-radius-pill, 999px);
+  margin-bottom: 16px;
+}
+
+.k-tag--ghost {
+  background: rgba(255, 204, 0, 0.15);
+  color: #111008;
+  border: 1px solid rgba(255, 204, 0, 0.3);
+}
+
+// --- Titres de section (Conforme colisage_front : #111008, Uppercase, Manrope) ---
+.k-section-title {
+  font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: clamp(28px, 4vw, 40px);
+  font-weight: 700;
+  line-height: 100%;
+  color: var(--k-navy, #203C89);
+  text-transform: uppercase;
+  margin-bottom: 18px;
+}
+
+// --- Sous-titres et paragraphes (Conforme colisage_front : #585751, 18px, 150%) ---
+.k-section-sub {
+  font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 150%;
+  color: #585751;
+  max-width: 680px;
+}
+
+// --- Boutons (Conforme colisage_front) ---
+.k-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 28px;
+  border-radius: 8px;
+  font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all var(--k-transition, 0.2s ease);
+  text-align: center;
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.k-btn--yellow {
+  background: var(--k-yellow, #FFCC00);
+  color: #111008;
+  border: 1px solid #203C89;
+  border-bottom-width: 3px;
+  box-shadow: 0 4px 12px rgba(255, 204, 0, 0.3);
+
+  &:hover:not(:disabled) {
+    background: #e6b800;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(255, 204, 0, 0.4);
+  }
+}
+
+.k-btn--navy {
+  background: var(--k-navy, #203C89);
+  color: #ffffff;
+  border: 1px solid #162A61;
+  border-bottom-width: 3px;
+
+  &:hover:not(:disabled) {
+    background: #162A61;
+    transform: translateY(-1px);
+  }
+}
+
+.k-btn--outline {
+  background: transparent;
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.5);
+
+  &:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: #ffffff;
+  }
+}
+
+.k-btn--soft,
+.k-btn--cream {
+  background: var(--k-bg, #FDFAEF);
+  color: #111008;
+  border: 1px solid #203C89;
+  border-bottom-width: 3px;
+
+  &:hover:not(:disabled) {
+    background: #f3efe0;
+  }
+}
+
+.k-btn--block {
+  width: 100%;
+}
+
+.k-btn--lg {
+  padding: 16px 32px;
+  font-size: 18px;
+}
+
+.k-btn--ghost {
+  background: transparent;
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.45);
+
+  &:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: #ffffff;
+  }
+}
+
+.k-btn--white {
+  background: #ffffff;
+  color: #111008;
+  border: 1px solid #E0E0E0;
+  border-bottom-width: 3px;
+
+  &:hover:not(:disabled) {
+    background: var(--k-yellow, #FFCC00);
+    transform: translateY(-1px);
+  }
+}
+
+// --- Header centré ---
+.k-heading-center {
+  text-align: center;
+  margin-bottom: 48px;
+
+  .k-section-sub {
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .k-section {
+    padding: 56px 0;
+  }
+}

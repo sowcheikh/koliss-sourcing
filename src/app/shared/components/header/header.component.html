@@ -1,0 +1,133 @@
+<header
+  class="sticky top-0 z-[60] h-[100px] w-full border-b border-koliss-border bg-koliss-bg font-manrope"
+>
+  <nav
+    class="mx-auto flex h-full max-w-[1440px] items-center justify-between gap-4 px-[22px] xl:gap-6"
+    aria-label="Navigation principale"
+  >
+    <!-- Burger (mobile / tablette) -->
+    <button
+      type="button"
+      class="relative z-50 block p-2 xl:hidden"
+      aria-label="Menu"
+      aria-controls="mobile-menu"
+      [attr.aria-expanded]="menuOpen()"
+      (click)="toggleMenu()"
+    >
+      <span class="sr-only">{{ menuOpen() ? 'Fermer le menu' : 'Ouvrir le menu' }}</span>
+      <span
+        class="mb-[5px] block h-[3px] w-6 bg-koliss-primary transition-all duration-300"
+        [class.translate-y-2]="menuOpen()"
+        [class.rotate-45]="menuOpen()"
+      ></span>
+      <span
+        class="mb-[5px] block h-[3px] w-6 bg-koliss-primary transition-all duration-300"
+        [class.opacity-0]="menuOpen()"
+      ></span>
+      <span
+        class="block h-[3px] w-6 bg-koliss-primary transition-all duration-300"
+        [class.-translate-y-2]="menuOpen()"
+        [class.-rotate-45]="menuOpen()"
+      ></span>
+    </button>
+
+    <!-- Logo + sous-marque Sourcing -->
+    <a
+      routerLink="/"
+      class="flex shrink-0 items-center gap-3 transition-opacity duration-300 hover:opacity-85"
+      aria-label="KOLISS Sourcing — Accueil"
+    >
+      <img
+        src="assets/images/logo-koliss-Banniere.png"
+        alt="Logo KOLISS"
+        class="h-[90px] w-[109px] object-contain"
+      />
+      <span
+        class="hidden border-l-2 border-koliss-secondary pl-3 text-xs font-extrabold uppercase tracking-[0.18em] text-koliss-primary sm:block"
+      >
+        Sourcing
+      </span>
+    </a>
+
+    <!-- Navigation desktop -->
+    <ul class="hidden min-w-0 flex-1 list-none items-center justify-end gap-2 xl:flex">
+      @for (item of navItems; track item.route) {
+        <li>
+          <a
+            [routerLink]="item.route"
+            routerLinkActive="!bg-koliss-text-muted !text-white"
+            [routerLinkActiveOptions]="{ exact: !!item.exact }"
+            class="rounded-lg px-3 py-1.5 text-sm font-medium leading-none text-koliss-text-muted transition-colors duration-300 hover:bg-koliss-secondary-soft hover:text-koliss-primary"
+          >
+            {{ item.label }}
+          </a>
+        </li>
+      }
+    </ul>
+
+    <!-- Recherche + CTA -->
+    <div class="flex shrink-0 items-center gap-3 xl:gap-4">
+      <form
+        class="hidden items-center gap-2 rounded-lg border border-koliss-border-strong bg-white px-3 py-2 transition-shadow focus-within:border-koliss-primary focus-within:shadow-[0_0_0_3px_rgba(32,60,137,0.18)] lg:flex xl:w-72"
+        role="search"
+        (submit)="onSearch($event, desktopSearch)"
+      >
+        <i class="pi pi-search text-sm text-koliss-text-soft" aria-hidden="true"></i>
+        <input
+          #desktopSearch
+          type="search"
+          name="q"
+          class="w-full bg-transparent text-sm text-koliss-text outline-none placeholder:text-koliss-text-soft"
+          placeholder="Rechercher un produit, catégorie…"
+          aria-label="Rechercher un produit ou une catégorie"
+        />
+      </form>
+      <span
+        class="hidden rounded-full border border-koliss-success/40 bg-green-50 px-2.5 py-1 text-[11px] font-bold tracking-wide text-koliss-success-dark 2xl:inline"
+        >B2B</span
+      >
+      <a appButton variant="yellow" size="sm" routerLink="/devis" class="whitespace-nowrap">
+        Devis gratuit
+        <i class="pi pi-arrow-right text-xs" aria-hidden="true"></i>
+      </a>
+    </div>
+  </nav>
+
+  <!-- Menu mobile -->
+  @if (menuOpen()) {
+    <div
+      id="mobile-menu"
+      class="absolute inset-x-0 top-[100px] z-40 border-b border-koliss-border bg-koliss-bg px-[22px] pb-6 pt-2 shadow-lg animate-fade-in xl:hidden"
+    >
+      <form
+        class="mb-3 flex items-center gap-2 rounded-lg border border-koliss-border-strong bg-white px-3 py-2.5"
+        role="search"
+        (submit)="onSearch($event, mobileSearch)"
+      >
+        <i class="pi pi-search text-sm text-koliss-text-soft" aria-hidden="true"></i>
+        <input
+          #mobileSearch
+          type="search"
+          name="q"
+          class="w-full bg-transparent text-sm outline-none placeholder:text-koliss-text-soft"
+          placeholder="Rechercher un produit, catégorie…"
+          aria-label="Rechercher un produit ou une catégorie"
+        />
+      </form>
+      <ul class="flex list-none flex-col gap-1">
+        @for (item of navItems; track item.route) {
+          <li>
+            <a
+              [routerLink]="item.route"
+              routerLinkActive="!bg-koliss-text-muted !text-white"
+              [routerLinkActiveOptions]="{ exact: !!item.exact }"
+              class="block rounded-lg px-4 py-3 text-base font-medium text-koliss-text-muted transition-colors hover:bg-koliss-secondary-soft hover:text-koliss-primary"
+            >
+              {{ item.label }}
+            </a>
+          </li>
+        }
+      </ul>
+    </div>
+  }
+</header>

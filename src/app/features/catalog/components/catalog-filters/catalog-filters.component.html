@@ -1,0 +1,135 @@
+<div class="flex flex-col gap-7">
+  <!-- Recherche -->
+  <section>
+    <h2 class="mb-2.5 text-xs font-extrabold uppercase tracking-widest text-koliss-primary">Recherche</h2>
+    <label class="sr-only" for="catalog-search">Mot-clé ou référence</label>
+    <div class="relative">
+      <i
+        class="pi pi-search pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm text-koliss-text-soft"
+        aria-hidden="true"
+      ></i>
+      <input
+        id="catalog-search"
+        type="search"
+        class="k-input !pl-9"
+        placeholder="Mot-clé, référence…"
+        [value]="query()"
+        (input)="onQuery($event)"
+      />
+    </div>
+  </section>
+
+  <!-- Catégories -->
+  <section>
+    <h2 class="mb-2.5 text-xs font-extrabold uppercase tracking-widest text-koliss-primary">Catégorie</h2>
+    <ul class="flex list-none flex-col gap-1">
+      <li>
+        <button
+          type="button"
+          class="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-sm font-semibold transition-colors"
+          [class]="
+            category() === 'all'
+              ? 'bg-koliss-primary text-white'
+              : 'text-koliss-text-muted hover:bg-koliss-secondary-soft hover:text-koliss-primary'
+          "
+          [attr.aria-pressed]="category() === 'all'"
+          (click)="categoryChange.emit('all')"
+        >
+          <i class="pi pi-th-large text-sm" aria-hidden="true"></i>
+          <span class="flex-1">Toutes catégories</span>
+          <span class="text-xs opacity-70">{{ totalCount() }}</span>
+        </button>
+      </li>
+      @for (item of categories(); track item.id) {
+        <li>
+          <button
+            type="button"
+            class="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-sm font-semibold transition-colors"
+            [class]="
+              category() === item.id
+                ? 'bg-koliss-primary text-white'
+                : 'text-koliss-text-muted hover:bg-koliss-secondary-soft hover:text-koliss-primary'
+            "
+            [attr.aria-pressed]="category() === item.id"
+            (click)="categoryChange.emit(item.id)"
+          >
+            <i class="pi text-sm" [class]="item.icon" aria-hidden="true"></i>
+            <span class="flex-1">{{ item.label }}</span>
+            <span class="text-xs opacity-70">{{ categoryCounts()[item.id] }}</span>
+          </button>
+        </li>
+      }
+    </ul>
+  </section>
+
+  <!-- MOQ -->
+  <section>
+    <h2 class="mb-2.5 text-xs font-extrabold uppercase tracking-widest text-koliss-primary">MOQ maximum</h2>
+    <label class="sr-only" for="catalog-moq">MOQ maximum en unités</label>
+    <input
+      id="catalog-moq"
+      type="range"
+      min="1"
+      [max]="maxMoqBound"
+      class="w-full accent-[#203C89]"
+      [value]="maxMoq()"
+      (input)="onMoq($event)"
+    />
+    <p class="mt-1 flex justify-between text-xs text-koliss-text-soft">
+      <span>1 unité</span>
+      <span class="font-bold text-koliss-primary">{{ maxMoq() }} unités</span>
+    </p>
+  </section>
+
+  <!-- Origine -->
+  <section>
+    <h2 class="mb-2.5 text-xs font-extrabold uppercase tracking-widest text-koliss-primary">Origine</h2>
+    <ul class="flex list-none flex-col gap-1">
+      @for (origin of originFilters; track origin.label) {
+        <li
+          class="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm"
+          [class]="origin.available ? 'font-semibold text-koliss-text' : 'text-koliss-text-soft opacity-70'"
+        >
+          <img
+            [src]="'assets/flags/' + origin.countryCode + '.png'"
+            alt=""
+            class="h-3 w-4 rounded-[2px] object-cover"
+            loading="lazy"
+          />
+          <span class="flex-1">{{ origin.label }}</span>
+          @if (!origin.available) {
+            <span class="rounded-full bg-koliss-bg-2 px-2 py-0.5 text-[10px] font-bold uppercase">Bientôt</span>
+          }
+        </li>
+      }
+    </ul>
+  </section>
+
+  <!-- Certifications -->
+  <section>
+    <h2 class="mb-2.5 text-xs font-extrabold uppercase tracking-widest text-koliss-primary">Certifications</h2>
+    <ul class="flex list-none flex-col gap-1">
+      @for (cert of certificationFilters; track cert.value) {
+        <li>
+          <label
+            class="flex cursor-pointer items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-semibold text-koliss-text-muted transition-colors hover:bg-koliss-secondary-soft"
+          >
+            <input
+              type="checkbox"
+              class="h-4 w-4 accent-[#203C89]"
+              [checked]="certifications().includes(cert.value)"
+              (change)="certificationToggle.emit(cert.value)"
+            />
+            <i class="pi pi-verified text-koliss-primary" aria-hidden="true"></i>
+            {{ cert.label }}
+          </label>
+        </li>
+      }
+    </ul>
+  </section>
+
+  <a appButton variant="yellow" block routerLink="/devis">
+    <i class="pi pi-file-edit" aria-hidden="true"></i>
+    Devis personnalisé
+  </a>
+</div>

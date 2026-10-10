@@ -1,0 +1,139 @@
+<app-page-hero
+  [breadcrumb]="breadcrumb"
+  subtitle="2 400+ références · Prix fabricant · MOQ dès 5 unités · Livraison Asie–Afrique"
+>
+  Boutique Sourcing B2B
+</app-page-hero>
+
+<div class="k-container py-10 md:py-14">
+  <div class="grid grid-cols-1 gap-8 lg:grid-cols-[280px_1fr] xl:grid-cols-[300px_1fr]">
+    <!-- Barre latérale de filtres -->
+    <aside class="k-card h-fit p-6 lg:sticky lg:top-[120px]">
+      <app-catalog-filters
+        [categories]="categories"
+        [categoryCounts]="categoryCounts()"
+        [totalCount]="allProducts().length"
+        [category]="selectedCategory()"
+        [query]="searchQuery()"
+        [maxMoq]="maxMoq()"
+        [certifications]="selectedCertifications()"
+        (categoryChange)="onCategoryChange($event)"
+        (queryChange)="onQueryChange($event)"
+        (maxMoqChange)="onMaxMoqChange($event)"
+        (certificationToggle)="onCertificationToggle($event)"
+      />
+    </aside>
+
+    <!-- Zone principale : résultats et outils -->
+    <section>
+      <!-- Barre d'outils du catalogue -->
+      <div
+        class="mb-6 flex flex-wrap items-center justify-between gap-4 rounded-koliss border border-koliss-border bg-white p-4 shadow-sm"
+      >
+        <p class="text-sm font-semibold text-koliss-text">
+          <strong class="text-base text-koliss-primary">{{ filteredProducts().length }}</strong>
+          produits trouvés
+        </p>
+
+        <div class="flex items-center gap-3">
+          <label for="catalog-sort-select" class="sr-only">Trier les produits par</label>
+          <select
+            id="catalog-sort-select"
+            class="k-input !w-auto !py-2 !text-sm"
+            [value]="sortKey()"
+            (change)="onSortChange($event)"
+          >
+            @for (opt of sortOptions; track opt.key) {
+              <option [value]="opt.key">{{ opt.label }}</option>
+            }
+          </select>
+
+          <!-- Toggle d'affichage Grille / Liste -->
+          <div class="flex rounded-lg border border-koliss-border-strong bg-koliss-bg-2 p-1">
+            <button
+              type="button"
+              class="flex h-8 w-8 items-center justify-center rounded text-sm transition-colors"
+              [class]="
+                layoutMode() === 'grid'
+                  ? 'bg-white text-koliss-primary shadow-sm font-bold'
+                  : 'text-koliss-text-soft hover:text-koliss-primary'
+              "
+              aria-label="Affichage en grille"
+              [attr.aria-pressed]="layoutMode() === 'grid'"
+              (click)="layoutMode.set('grid')"
+            >
+              <i class="pi pi-th-large" aria-hidden="true"></i>
+            </button>
+            <button
+              type="button"
+              class="flex h-8 w-8 items-center justify-center rounded text-sm transition-colors"
+              [class]="
+                layoutMode() === 'list'
+                  ? 'bg-white text-koliss-primary shadow-sm font-bold'
+                  : 'text-koliss-text-soft hover:text-koliss-primary'
+              "
+              aria-label="Affichage en liste"
+              [attr.aria-pressed]="layoutMode() === 'list'"
+              (click)="layoutMode.set('list')"
+            >
+              <i class="pi pi-bars" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Grille ou liste de produits -->
+      @if (displayedProducts().length > 0) {
+        <div
+          class="grid gap-6"
+          [class]="
+            layoutMode() === 'grid'
+              ? 'grid-cols-1 sm:grid-cols-2 xl:grid-cols-3'
+              : 'grid-cols-1'
+          "
+        >
+          @for (product of displayedProducts(); track product.id) {
+            <app-product-card [product]="product" [layout]="layoutMode()" />
+          }
+        </div>
+
+        <!-- Bouton Charger plus -->
+        @if (hasMore()) {
+          <div class="mt-10 text-center">
+            <button appButton variant="outline-navy" (click)="loadMore()">
+              Charger plus de produits
+              <i class="pi pi-arrow-right text-xs" aria-hidden="true"></i>
+            </button>
+          </div>
+        }
+      } @else {
+        <!-- État vide lorsqu'aucun produit ne correspond -->
+        <div class="k-card flex flex-col items-center justify-center p-12 text-center">
+          <div
+            class="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-koliss-secondary-soft text-koliss-primary"
+          >
+            <i class="pi pi-search text-2xl" aria-hidden="true"></i>
+          </div>
+          <h3 class="text-lg font-bold text-koliss-text">Aucun produit ne correspond à vos critères</h3>
+          <p class="mt-2 max-w-md text-sm text-koliss-text-muted">
+            Essayez d'élargir votre recherche, de modifier les filtres ou demandez directement un devis à
+            notre équipe de sourcing.
+          </p>
+          <div class="mt-6 flex flex-wrap gap-3 justify-center">
+            <button
+              appButton
+              variant="outline-navy"
+              (click)="onCategoryChange('all'); onQueryChange(''); onMaxMoqChange(500)"
+            >
+              Réinitialiser les filtres
+            </button>
+            <a appButton variant="yellow" routerLink="/devis">
+              <i class="pi pi-file-edit" aria-hidden="true"></i>
+              Demander un devis sur mesure
+            </a>
+          </div>
+        </div>
+      }
+    </section>
+  </div>
+</div>
