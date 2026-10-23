@@ -1,0 +1,280 @@
+<div class="min-h-screen bg-koliss-bg flex flex-col justify-center py-8 px-4 sm:px-6 lg:px-8">
+  <div class="mx-auto w-full max-w-5xl overflow-hidden rounded-3xl border border-koliss-border bg-white shadow-xl grid grid-cols-1 lg:grid-cols-12">
+    <!-- Formulaire (Gauche) -->
+    <div class="p-8 sm:p-12 lg:col-span-7 flex flex-col justify-center">
+      <div>
+        <a routerLink="/" class="inline-flex items-center gap-3 lg:hidden mb-6">
+          <img src="assets/images/logo-koliss-Banniere.png" alt="KOLISS" class="h-10 w-auto object-contain" />
+          <span class="border-l-2 border-koliss-secondary pl-3 text-xs font-extrabold uppercase tracking-widest text-koliss-primary">
+            Sourcing
+          </span>
+        </a>
+
+        <h1 class="text-2xl font-extrabold text-koliss-text sm:text-3xl">
+          Créer votre compte client
+        </h1>
+        <p class="mt-2 text-sm text-koliss-text-muted">
+          Accédez aux catalogues grossistes, demandez des devis gratuits et suivez vos importations.
+        </p>
+
+        <!-- Boutons OAuth Sociaux -->
+        <p class="mt-6 text-xs font-bold uppercase tracking-wider text-koliss-text-soft">
+          Inscription rapide avec
+        </p>
+        <div class="mt-3 grid grid-cols-2 gap-3">
+          <button
+            type="button"
+            class="flex items-center justify-center gap-2.5 rounded-xl border border-koliss-border bg-white px-4 py-3 text-sm font-bold text-koliss-text transition-all hover:border-koliss-primary hover:bg-koliss-bg disabled:cursor-not-allowed disabled:opacity-50"
+            [disabled]="oauthLoading() !== null || submitting()"
+            (click)="handleGoogle()"
+            aria-label="S'inscrire avec Google"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                fill="#EA4335"
+                d="M12 10.2v3.6h5.1c-.2 1.2-.9 2.2-1.9 2.9l3.1 2.4c1.8-1.7 2.8-4.1 2.8-7 0-.7-.1-1.3-.2-1.9H12z"
+              />
+              <path
+                fill="#34A853"
+                d="M5.3 14.3 4.4 15l-2.5 1.9C3.5 20.5 7.4 23 12 23c2.7 0 5-.9 6.7-2.4l-3.1-2.4c-.9.6-2 .9-3.6.9-2.8 0-5.1-1.9-5.9-4.4z"
+              />
+              <path
+                fill="#4A90E2"
+                d="M2 7.1C1.4 8.3 1 9.6 1 11s.4 2.7 1 3.9c0 .1 3.3-2.5 3.3-2.5-.2-.6-.3-1.2-.3-1.4 0-.5.1-1 .3-1.4L2 7.1z"
+              />
+              <path
+                fill="#FBBC05"
+                d="M12 4.6c1.5 0 2.8.5 3.8 1.5l2.8-2.8C16.9 1.5 14.7.5 12 .5 7.4.5 3.5 3 1.9 7.1L5.3 9.7C6.1 7.1 8.4 4.6 12 4.6z"
+              />
+            </svg>
+            <span>{{ oauthLoading() === 'google' ? 'Inscription…' : 'Google' }}</span>
+          </button>
+
+          <button
+            type="button"
+            class="flex items-center justify-center gap-2.5 rounded-xl border border-koliss-border bg-white px-4 py-3 text-sm font-bold text-koliss-text transition-all hover:border-koliss-primary hover:bg-koliss-bg disabled:cursor-not-allowed disabled:opacity-50"
+            [disabled]="oauthLoading() !== null || submitting()"
+            (click)="handleFacebook()"
+            aria-label="S'inscrire avec Facebook"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                fill="#1877F2"
+                d="M24 12.07C24 5.41 18.63.07 12 .07S0 5.41 0 12.07c0 5.99 4.39 10.95 10.13 11.85v-8.39H7.08v-3.46h3.05V9.41c0-3.01 1.79-4.67 4.53-4.67 1.31 0 2.68.23 2.68.23v2.95h-1.51c-1.49 0-1.95.93-1.95 1.87v2.25h3.32l-.53 3.46h-2.79v8.39C19.61 23.02 24 18.06 24 12.07z"
+              />
+            </svg>
+            <span>{{ oauthLoading() === 'facebook' ? 'Inscription…' : 'Facebook' }}</span>
+          </button>
+        </div>
+
+        <div class="relative my-6 flex items-center justify-center">
+          <div class="w-full border-t border-koliss-border"></div>
+          <span class="absolute bg-white px-3 text-xs font-bold uppercase tracking-wider text-koliss-text-soft">
+            Ou formulaire d'inscription
+          </span>
+        </div>
+
+        <!-- Formulaire Inscription -->
+        <form [formGroup]="form" (ngSubmit)="submit()" class="space-y-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label for="reg-firstname" class="k-label">Prénom <span class="text-koliss-error">*</span></label>
+              <input
+                id="reg-firstname"
+                type="text"
+                class="k-input"
+                formControlName="firstName"
+                placeholder="Mamadou"
+                autocomplete="given-name"
+              />
+              @if (form.controls.firstName.touched && form.controls.firstName.invalid) {
+                <p class="k-field-error">Prénom requis (2 lettres min.).</p>
+              }
+            </div>
+
+            <div>
+              <label for="reg-lastname" class="k-label">Nom <span class="text-koliss-error">*</span></label>
+              <input
+                id="reg-lastname"
+                type="text"
+                class="k-input"
+                formControlName="lastName"
+                placeholder="Diallo"
+                autocomplete="family-name"
+              />
+              @if (form.controls.lastName.touched && form.controls.lastName.invalid) {
+                <p class="k-field-error">Nom requis (2 lettres min.).</p>
+              }
+            </div>
+          </div>
+
+          <div>
+            <label for="reg-email" class="k-label">Adresse e-mail <span class="text-koliss-error">*</span></label>
+            <input
+              id="reg-email"
+              type="email"
+              class="k-input"
+              formControlName="email"
+              placeholder="mamadou.diallo@entreprise.com"
+              autocomplete="email"
+            />
+            @if (form.controls.email.touched && form.controls.email.invalid) {
+              <p class="k-field-error">Adresse email valide requise.</p>
+            }
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label for="reg-password" class="k-label">Mot de passe <span class="text-koliss-error">*</span></label>
+              <div class="relative">
+                <input
+                  id="reg-password"
+                  [type]="showPassword() ? 'text' : 'password'"
+                  class="k-input pr-10"
+                  formControlName="password"
+                  placeholder="Min. 6 caractères"
+                  autocomplete="new-password"
+                />
+                <button
+                  type="button"
+                  class="absolute right-3 top-1/2 -translate-y-1/2 text-koliss-text-soft hover:text-koliss-primary"
+                  (click)="togglePassword()"
+                  [attr.aria-label]="showPassword() ? 'Masquer' : 'Afficher'"
+                >
+                  <i class="pi text-sm" [class]="showPassword() ? 'pi-eye-slash' : 'pi-eye'" aria-hidden="true"></i>
+                </button>
+              </div>
+              @if (form.controls.password.touched && form.controls.password.invalid) {
+                <p class="k-field-error">Minimum 6 caractères.</p>
+              }
+            </div>
+
+            <div>
+              <label for="reg-confirm" class="k-label">Confirmer <span class="text-koliss-error">*</span></label>
+              <div class="relative">
+                <input
+                  id="reg-confirm"
+                  [type]="showConfirm() ? 'text' : 'password'"
+                  class="k-input pr-10"
+                  formControlName="confirmPassword"
+                  placeholder="Répétez le mot de passe"
+                  autocomplete="new-password"
+                />
+                <button
+                  type="button"
+                  class="absolute right-3 top-1/2 -translate-y-1/2 text-koliss-text-soft hover:text-koliss-primary"
+                  (click)="toggleConfirm()"
+                  [attr.aria-label]="showConfirm() ? 'Masquer' : 'Afficher'"
+                >
+                  <i class="pi text-sm" [class]="showConfirm() ? 'pi-eye-slash' : 'pi-eye'" aria-hidden="true"></i>
+                </button>
+              </div>
+              @if (form.controls.confirmPassword.touched && form.errors?.['passwordMismatch']) {
+                <p class="k-field-error">Les mots de passe ne correspondent pas.</p>
+              }
+            </div>
+          </div>
+
+          <!-- Conditions générales -->
+          <div class="pt-2">
+            <label class="flex items-start gap-3 cursor-pointer">
+              <input
+                type="checkbox"
+                class="mt-1 h-4 w-4 rounded border-koliss-border text-koliss-primary focus:ring-koliss-primary"
+                formControlName="acceptTerms"
+              />
+              <span class="text-xs text-koliss-text-muted">
+                J'accepte les <span class="font-bold text-koliss-primary">Conditions Générales d'Utilisation</span> et la politique de confidentialité de KOLISS.
+              </span>
+            </label>
+            @if (form.controls.acceptTerms.touched && form.controls.acceptTerms.invalid) {
+              <p class="k-field-error">Veuillez accepter les conditions pour continuer.</p>
+            }
+          </div>
+
+          @if (globalError()) {
+            <div class="rounded-xl bg-rose-50 border border-rose-200 p-3 text-xs font-semibold text-rose-800" role="alert">
+              <i class="pi pi-exclamation-triangle mr-1 text-rose-600"></i>
+              {{ globalError() }}
+            </div>
+          }
+
+          <button
+            type="submit"
+            class="k-btn k-btn--yellow w-full justify-center text-base font-bold shadow-md"
+            [disabled]="submitting() || oauthLoading() !== null"
+          >
+            @if (submitting()) {
+              <i class="pi pi-spin pi-spinner mr-2" aria-hidden="true"></i>
+              Création du compte…
+            } @else {
+              <i class="pi pi-user-plus mr-2" aria-hidden="true"></i>
+              Créer mon compte
+            }
+          </button>
+        </form>
+
+        <p class="mt-8 text-center text-sm text-koliss-text-muted">
+          Vous possédez déjà un compte client ?
+          <a
+            routerLink="/connexion"
+            [queryParams]="returnUrl ? { returnUrl: returnUrl } : null"
+            class="font-bold text-koliss-primary hover:underline ml-1"
+          >
+            Se connecter
+          </a>
+        </p>
+      </div>
+    </div>
+
+    <!-- Panneau Marque & Réassurance (Droite) -->
+    <aside class="hidden lg:flex lg:col-span-5 bg-koliss-primary p-12 text-white flex-col justify-between relative overflow-hidden">
+      <div class="absolute -right-16 -top-16 h-64 w-64 rounded-full bg-white/5 pointer-events-none"></div>
+      <div class="absolute -bottom-20 -left-20 h-72 w-72 rounded-full bg-koliss-secondary/10 pointer-events-none"></div>
+
+      <div class="relative z-10">
+        <a routerLink="/" class="inline-flex items-center gap-3">
+          <img src="assets/images/logo-koliss-Banniere.png" alt="KOLISS" class="h-14 w-auto object-contain" />
+          <span class="border-l-2 border-koliss-secondary pl-3 text-xs font-extrabold uppercase tracking-widest text-koliss-secondary">
+            Sourcing
+          </span>
+        </a>
+
+        <div class="mt-12 space-y-4">
+          <span class="inline-block rounded-full bg-white/10 px-3 py-1 text-xs font-bold text-koliss-secondary">
+            Espace Pro & PME
+          </span>
+          <h2 class="text-2xl font-extrabold leading-snug">
+            Développez vos marges en achetant <span class="text-koliss-secondary">au prix fabricant</span>.
+          </h2>
+          <p class="text-sm text-white/75 leading-relaxed">
+            Créez votre compte en 1 minute et bénéficiez immédiatement de notre équipe bilingue basée en Chine et à Dakar.
+          </p>
+        </div>
+
+        <ul class="mt-8 space-y-3.5 text-xs text-white/85">
+          <li class="flex items-center gap-3">
+            <span class="flex h-6 w-6 items-center justify-center rounded-full bg-koliss-secondary text-koliss-primary font-bold">✓</span>
+            <span>Accès prioritaire à plus de 2 400 références industrielles</span>
+          </li>
+          <li class="flex items-center gap-3">
+            <span class="flex h-6 w-6 items-center justify-center rounded-full bg-koliss-secondary text-koliss-primary font-bold">✓</span>
+            <span>Conseiller sourcing francophone dédié sur WhatsApp</span>
+          </li>
+          <li class="flex items-center gap-3">
+            <span class="flex h-6 w-6 items-center justify-center rounded-full bg-koliss-secondary text-koliss-primary font-bold">✓</span>
+            <span>Suivi de commande et consolidation logistique tout-en-un</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="relative z-10 pt-8 border-t border-white/10 flex items-center justify-between text-xs text-white/70">
+        <span>© KOLISS Sourcing</span>
+        <a routerLink="/" class="inline-flex items-center gap-1 font-bold text-white hover:text-koliss-secondary transition-colors">
+          <i class="pi pi-arrow-left text-[10px]" aria-hidden="true"></i>
+          Retour à l'accueil
+        </a>
+      </div>
+    </aside>
+  </div>
+</div>

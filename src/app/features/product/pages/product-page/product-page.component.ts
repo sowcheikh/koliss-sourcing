@@ -7,8 +7,10 @@ import {
   input,
   signal,
 } from '@angular/core';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { Title } from '@angular/platform-browser';
 import { RouterLink } from '@angular/router';
+import { switchMap } from 'rxjs';
 
 import { CONTACT, SITE_NAME, WHATSAPP_URL } from '../../../../core/config/site.config';
 import { findCategory } from '../../../../core/data/categories.data';
@@ -64,15 +66,10 @@ export class ProductPageComponent {
   protected readonly quantity = signal(1);
   protected readonly manualTier = signal<PriceTier | null>(null);
 
-  protected readonly product = computed(() => {
-    const rawId = parseInt(this.id(), 10);
-    if (Number.isNaN(rawId)) {
-      return undefined;
-    }
-    let found: Product | undefined;
-    this.catalogService.getProductById(rawId).subscribe((p) => (found = p));
-    return found;
-  });
+  protected readonly product = toSignal(
+    toObservable(this.id).pipe(switchMap((id) => this.catalogService.getProductById(id))),
+    { initialValue: undefined },
+  );
 
   protected readonly category = computed(() => {
     const p = this.product();
@@ -148,15 +145,19 @@ export class ProductPageComponent {
     ];
   });
 
+  protected readonly allProducts = toSignal(this.catalogService.getProducts(), {
+    initialValue: [] as readonly Product[],
+  });
+
   /** Produits suggérés de la même catégorie. */
   protected readonly relatedProducts = computed(() => {
     const current = this.product();
     if (!current) {
       return [];
     }
-    let list: readonly Product[] = [];
-    this.catalogService.getProducts().subscribe((products) => (list = products));
-    return list.filter((p) => p.category === current.category && p.id !== current.id).slice(0, 3);
+    return this.allProducts()
+      .filter((p) => p.category === current.category && p.id !== current.id)
+      .slice(0, 3);
   });
 
   protected readonly whatsappDirectUrl = computed(() => {

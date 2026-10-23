@@ -1,0 +1,12 @@
+{
+  "/sourcing": {
+    "target": "https://gateway.yoni-ap.com",
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/actor": {
+    "target": "https://gateway.yoni-ap.com",
+    "secure": false,
+    "changeOrigin": true
+  }
+}

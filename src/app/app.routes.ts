@@ -1,5 +1,7 @@
 import { Routes } from '@angular/router';
 
+import { authGuard, guestGuard } from './core/guards/auth.guard';
+
 const TITLE_SUFFIX = 'KOLISS Sourcing';
 
 /** Toutes les pages sont chargées à la demande (lazy loading). */
@@ -41,6 +43,35 @@ export const routes: Routes = [
       import('./features/quote/pages/quote-page/quote-page.component').then(
         (m) => m.QuotePageComponent,
       ),
+  },
+  {
+    path: 'connexion',
+    title: `Connexion client — ${TITLE_SUFFIX}`,
+    canActivate: [guestGuard],
+    loadComponent: () =>
+      import('./features/auth/login/login.component').then((m) => m.LoginComponent),
+  },
+  {
+    path: 'inscription',
+    title: `Inscription gratuite — ${TITLE_SUFFIX}`,
+    canActivate: [guestGuard],
+    loadComponent: () =>
+      import('./features/auth/register/register.component').then((m) => m.RegisterComponent),
+  },
+  {
+    path: 'connexion/callback',
+    title: `Authentification en cours — ${TITLE_SUFFIX}`,
+    loadComponent: () =>
+      import('./features/auth/callback/auth-callback.component').then(
+        (m) => m.AuthCallbackComponent,
+      ),
+  },
+  {
+    path: 'compte',
+    title: `Mon espace client — ${TITLE_SUFFIX}`,
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./features/account/account-page.component').then((m) => m.AccountPageComponent),
   },
   { path: '**', redirectTo: '' },
 ];

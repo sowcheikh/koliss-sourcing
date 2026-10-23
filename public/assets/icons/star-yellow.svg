@@ -1,0 +1,14 @@
+<!-- assets/icons/star-yellow.svg -->
+<svg width="131" height="124" viewBox="0 0 131 124" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="starGradient" x1="0%" y1="50%" x2="100%" y2="50%">
+      <stop offset="0%" style="stop-color:#FFCC00;stop-opacity:1" />
+      <stop offset="45%" style="stop-color:#FFCC00;stop-opacity:1" />
+      <stop offset="55%" style="stop-color:#FFD633;stop-opacity:1" />
+      <stop offset="70%" style="stop-color:#FFE066;stop-opacity:1" />
+      <stop offset="85%" style="stop-color:#FFEE99;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FFF5CC;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <path d="M65.5 0L80.8792 47.3323H130.647L90.3841 76.5853L105.763 123.918L65.5 94.6647L25.2367 123.918L40.6159 76.5853L0.352631 47.3323H50.1208L65.5 0Z" fill="url(#starGradient)"/>
+</svg>

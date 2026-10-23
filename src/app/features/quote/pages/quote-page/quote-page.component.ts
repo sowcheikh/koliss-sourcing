@@ -16,6 +16,7 @@ import {
 import { RouterLink } from '@angular/router';
 
 import { CONTACT, WHATSAPP_URL } from '../../../../core/config/site.config';
+import { AuthService } from '../../../../core/services/auth.service';
 import { CatalogService } from '../../../../core/services/catalog.service';
 import { NotificationService } from '../../../../core/services/notification.service';
 import { QuoteService } from '../../../../core/services/quote.service';
@@ -87,6 +88,7 @@ export class QuotePageComponent {
   private readonly catalogService = inject(CatalogService);
   private readonly quoteService = inject(QuoteService);
   private readonly notificationService = inject(NotificationService);
+  protected readonly auth = inject(AuthService);
 
   protected readonly breadcrumb: readonly BreadcrumbItem[] = [
     { label: 'Accueil', link: '/' },
@@ -123,14 +125,24 @@ export class QuotePageComponent {
   }
 
   constructor() {
+    // Préremplissage automatique des coordonnées si l'utilisateur est connecté
+    effect(() => {
+      const u = this.auth.user();
+      if (u) {
+        this.form.patchValue({
+          firstName: u.firstName || this.form.get('firstName')?.value,
+          lastName: u.lastName || this.form.get('lastName')?.value,
+          email: u.email || this.form.get('email')?.value,
+          phone: u.whatsapp || this.form.get('phone')?.value,
+          company: u.company || this.form.get('company')?.value,
+        });
+      }
+    });
+
     // Préremplissage automatique si l'utilisateur arrive depuis un produit ou une formule
     effect(() => {
-      const prodIdStr = this.produit();
-      if (!prodIdStr) {
-        return;
-      }
-      const prodId = parseInt(prodIdStr, 10);
-      if (Number.isNaN(prodId)) {
+      const prodId = this.produit();
+      if (!prodId) {
         return;
       }
 
@@ -212,7 +224,9 @@ export class QuotePageComponent {
     this.isSubmitting.set(true);
 
     const val = this.form.getRawValue();
+    const currentUser = this.auth.user();
     const request: QuoteRequest = {
+      customerId: currentUser?.customerId || currentUser?.id,
       firstName: val.firstName ?? '',
       lastName: val.lastName ?? '',
       email: val.email ?? '',

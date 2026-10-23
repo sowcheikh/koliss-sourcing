@@ -5,6 +5,8 @@ export interface PriceTier {
   readonly minQty: number;
   readonly maxQty: number | null;
   readonly unitPrice: number;
+  readonly unitPriceUsd?: number;
+  readonly unitPriceCfa?: number;
   /** Palier mis en avant « MEILLEUR PRIX ». */
   readonly bestPrice?: boolean;
 }
@@ -22,7 +24,7 @@ export interface ProductOrigin {
 }
 
 export interface Product {
-  readonly id: number;
+  readonly id: number | string;
   readonly category: CategoryId;
   readonly name: string;
   /** Classe PrimeIcons du visuel principal. */

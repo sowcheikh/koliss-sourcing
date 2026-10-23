@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="700mm"
+   height="700mm"
+   viewBox="0 0 700 700"
+   version="1.1"
+   id="svg5365"
+   inkscape:version="0.92.0 r15299"
+   sodipodi:docname="visa-logo.svg"
+   inkscape:export-filename="C:\Users\suitedoalex\sites\visa-logo-0.png"
+   inkscape:export-xdpi="148.6263"
+   inkscape:export-ydpi="148.6263">
+  <defs
+     id="defs5359">
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath58">
+      <path
+         d="m 498.67899,36.402 h 75.72599 v 24.457 h -75.72599 z"
+         id="path56"
+         inkscape:connector-curvature="0" />
+    </clipPath>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.0875"
+     inkscape:cx="-1430.5905"
+     inkscape:cy="-648.24695"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata5362">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Camada 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,403)">
+    <g
+       transform="matrix(8.0081741,0,0,-8.0081741,-3946.722,336.44232)"
+       id="g52"
+       inkscape:export-filename="C:\Users\suitedoalex\sites\visa-logo-2.png"
+       inkscape:export-xdpi="29.319309"
+       inkscape:export-ydpi="29.319309">
+      <g
+         id="g54"
+         clip-path="url(#clipPath58)">
+        <g
+           id="g60"
+           transform="translate(536.17407,60.426601)">
+          <path
+             d="m 0,0 -5.06,-23.653999 h -6.119 L -6.117,0 Z m 25.745,-15.273 3.22,8.8820002 1.854,-8.8820002 z m 6.826999,-8.380999 h 5.659 L 33.291,0 h -5.223 c -1.175,0 -2.165,-0.684 -2.604,-1.735 l -9.182,-21.918999 h 6.425 l 1.276,3.532999 h 7.85 z M 16.601,-15.931 c 0.026,6.2430003 -8.633,6.5870001 -8.5730001,9.3760002 0.018,0.848 0.8269996,1.7509998 2.5950001,1.9809999 C 11.5,-4.459 13.916,-4.3709998 16.656,-5.632 l 1.074,5.015 C 16.257999,-0.082 14.364,0.432 12.007,0.432 5.959,0.432 1.702,-2.783 1.666,-7.387 1.627,-10.792 4.704,-12.693 7.0229998,-13.824 9.408,-14.983 10.208,-15.727 10.199,-16.764 10.182,-18.351 8.297,-19.051 6.5349998,-19.079 3.459,-19.125999 1.674,-18.247 0.252,-17.584999 L -0.857,-22.767 c 1.429,-0.656 4.068,-1.228 6.805,-1.257 6.428,0 10.632999,3.175 10.653,8.093 M -8.743,0 -18.657,-23.653999 h -6.468 L -30.004,-4.777 c -0.295999,1.163 -0.554,1.589 -1.454,2.0780001 C -32.929,-1.901 -35.358002,-1.152 -37.494999,-0.687 l 0.146,0.687 H -26.937 c 1.327,0 2.52,-0.883 2.821001,-2.412 L -21.539,-16.1 -15.171,0 Z"
+             style="fill:#1434cb;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             id="path62"
+             inkscape:connector-curvature="0" />
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

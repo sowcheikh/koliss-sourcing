@@ -41,6 +41,40 @@
   }
 }
 
+.koliss-input-uniform {
+  width: 100%;
+  font-family: 'Manrope', sans-serif;
+  font-size: 15px;
+  color: #111008;
+  padding: 10px 16px;
+  border: 1px solid #E0E0E0;
+  border-bottom: 3px solid #FFCC00;
+  border-radius: 8px;
+  background-color: #FFFFFF;
+  min-height: 44px;
+  box-sizing: border-box;
+  transition: all 0.2s ease-in-out;
+  outline: none;
+
+  &:focus {
+    border-color: #203C89;
+    border-bottom-color: #203C89;
+    box-shadow: 0 0 0 2px rgba(32, 60, 137, 0.1);
+  }
+
+  &:disabled, &[disabled] {
+    background-color: #F9FAFB;
+    border-color: #E5E7EB;
+    border-bottom-color: #E5E7EB;
+    color: #6B7280;
+    cursor: not-allowed;
+  }
+
+  &::placeholder {
+    color: #9CA3AF;
+  }
+}
+
 // --- Titres : accent <em> (jaune KOLISS, remplace l'italique orange de la maquette)
 .k-section-title em,
 .k-accent {

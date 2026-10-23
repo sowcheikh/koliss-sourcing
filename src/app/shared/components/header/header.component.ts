@@ -1,12 +1,13 @@
-import { ChangeDetectionStrategy, Component, HostListener, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostListener, computed, inject, signal } from '@angular/core';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { filter } from 'rxjs';
 
 import { NAV_ITEMS } from '../../../core/config/site.config';
+import { AuthService } from '../../../core/services/auth.service';
 import { ButtonComponent } from '../button/button.component';
 
-/** En-tête : logo, navigation, recherche globale et CTA devis (menu burger sous 1280px). */
+/** En-tête : logo, navigation, recherche globale, état auth et CTA devis. */
 @Component({
   selector: 'app-header',
   imports: [RouterLink, RouterLinkActive, ButtonComponent],
@@ -15,9 +16,25 @@ import { ButtonComponent } from '../button/button.component';
 })
 export class HeaderComponent {
   private readonly router = inject(Router);
+  private readonly auth = inject(AuthService);
 
   protected readonly navItems = NAV_ITEMS;
   protected readonly menuOpen = signal(false);
+  protected readonly user = this.auth.user;
+
+  protected readonly initials = computed(() => {
+    const user = this.user();
+    if (!user) {
+      return '';
+    }
+    const f = user.firstName?.trim().charAt(0) ?? '';
+    const l = user.lastName?.trim().charAt(0) ?? '';
+    const nameInit = `${f}${l}`.toUpperCase();
+    if (nameInit) {
+      return nameInit;
+    }
+    return user.email?.trim().charAt(0).toUpperCase() || '?';
+  });
 
   constructor() {
     this.router.events
@@ -37,10 +54,9 @@ export class HeaderComponent {
     this.menuOpen.set(false);
   }
 
-  protected onSearch(event: Event, input: HTMLInputElement): void {
-    event.preventDefault();
-    const query = input.value.trim();
-    void this.router.navigate(['/boutique'], { queryParams: { q: query || null } });
+
+  protected handleLogout(): void {
+    void this.auth.logout();
     this.menuOpen.set(false);
   }
 }

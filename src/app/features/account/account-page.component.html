@@ -1,0 +1,796 @@
+<!-- Fil d'Ariane -->
+<section class="border-b border-white/10 bg-koliss-primary py-4 text-white">
+  <div class="k-container">
+    <app-breadcrumb [items]="breadcrumbs" />
+  </div>
+</section>
+
+<main class="min-h-screen bg-koliss-bg py-8 md:py-12">
+  <div class="k-container space-y-6 md:space-y-8">
+    <!-- En-tête Page : Mon compte / Bonjour [nom] -->
+    <div>
+      <h1 class="text-3xl md:text-4xl font-bold text-koliss-text mb-1">Mon compte</h1>
+      <p class="text-base md:text-lg text-koliss-text">
+        Bonjour <strong class="font-bold">{{ greetingName() }}</strong>
+      </p>
+    </div>
+
+    <!-- Barre de navigation des onglets principaux (Design aligné sur colisage_front) -->
+    <div class="w-full overflow-x-auto pb-2">
+      <div class="flex gap-4 md:gap-6 min-w-fit">
+        <!-- Mon profil -->
+        <button
+          type="button"
+          (click)="setTab('profile')"
+          [class.bg-koliss-primary]="activeTab() === 'profile'"
+          [class.text-white]="activeTab() === 'profile'"
+          [class.bg-[#FEF5D1]]="activeTab() !== 'profile'"
+          [class.text-koliss-primary]="activeTab() !== 'profile'"
+          class="flex items-center gap-2.5 px-5 py-3.5 rounded-lg transition-all duration-200 hover:shadow-md flex-shrink-0 whitespace-nowrap text-sm md:text-base font-semibold cursor-pointer border border-transparent"
+          style="min-width: 140px; height: 56px;"
+        >
+          <img
+            src="assets/icons/profile-icon.svg"
+            alt="Mon profil"
+            class="w-5 h-5 flex-shrink-0"
+            [class.filter]="activeTab() === 'profile'"
+            [class.brightness-0]="activeTab() === 'profile'"
+            [class.invert]="activeTab() === 'profile'"
+          />
+          <span>Mon profil</span>
+        </button>
+
+        <!-- Mes devis -->
+        <button
+          type="button"
+          (click)="setTab('quotes')"
+          [class.bg-koliss-primary]="activeTab() === 'quotes'"
+          [class.text-white]="activeTab() === 'quotes'"
+          [class.bg-[#FEF5D1]]="activeTab() !== 'quotes'"
+          [class.text-koliss-primary]="activeTab() !== 'quotes'"
+          class="flex items-center gap-2.5 px-5 py-3.5 rounded-lg transition-all duration-200 hover:shadow-md flex-shrink-0 whitespace-nowrap text-sm md:text-base font-semibold cursor-pointer border border-transparent"
+          style="min-width: 140px; height: 56px;"
+        >
+          <img
+            src="assets/icons/quote-icon.svg"
+            alt="Mes devis"
+            class="w-5 h-5 flex-shrink-0"
+            [class.filter]="activeTab() === 'quotes'"
+            [class.brightness-0]="activeTab() === 'quotes'"
+            [class.invert]="activeTab() === 'quotes'"
+          />
+          <span>Mes devis</span>
+          @if (quotes().length > 0) {
+            <span
+              class="ml-1 px-2 py-0.5 text-xs rounded-full font-bold"
+              [class.bg-white/20]="activeTab() === 'quotes'"
+              [class.bg-koliss-primary/10]="activeTab() !== 'quotes'"
+              [class.text-koliss-primary]="activeTab() !== 'quotes'"
+            >
+              {{ quotes().length }}
+            </span>
+          }
+        </button>
+
+        <!-- Mes factures -->
+        <button
+          type="button"
+          (click)="setTab('invoices')"
+          [class.bg-koliss-primary]="activeTab() === 'invoices'"
+          [class.text-white]="activeTab() === 'invoices'"
+          [class.bg-[#FEF5D1]]="activeTab() !== 'invoices'"
+          [class.text-koliss-primary]="activeTab() !== 'invoices'"
+          class="flex items-center gap-2.5 px-5 py-3.5 rounded-lg transition-all duration-200 hover:shadow-md flex-shrink-0 whitespace-nowrap text-sm md:text-base font-semibold cursor-pointer border border-transparent"
+          style="min-width: 140px; height: 56px;"
+        >
+          <img
+            src="assets/icons/quote-icon.svg"
+            alt="Mes factures"
+            class="w-5 h-5 flex-shrink-0"
+            [class.filter]="activeTab() === 'invoices'"
+            [class.brightness-0]="activeTab() === 'invoices'"
+            [class.invert]="activeTab() === 'invoices'"
+          />
+          <span>Mes factures</span>
+          @if (invoices().length > 0) {
+            <span
+              class="ml-1 px-2 py-0.5 text-xs rounded-full font-bold"
+              [class.bg-white/20]="activeTab() === 'invoices'"
+              [class.bg-koliss-primary/10]="activeTab() !== 'invoices'"
+              [class.text-koliss-primary]="activeTab() !== 'invoices'"
+            >
+              {{ invoices().length }}
+            </span>
+          }
+        </button>
+      </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- ONGLET 1 : MON PROFIL (En phase exacte avec colisage_front)                -->
+    <!-- ========================================================================= -->
+    @if (activeTab() === 'profile') {
+      <div class="flex flex-col lg:flex-row gap-6 lg:gap-8 items-start">
+        <!-- Navigation latérale gauche du profil (5 sections) -->
+        <div class="w-full lg:w-80 flex-shrink-0">
+          <nav class="flex lg:flex-col gap-1.5 overflow-x-auto lg:overflow-visible pb-2 lg:pb-0 bg-white shadow-2xs">
+            @for (sec of profileSections; track sec.id) {
+              <button
+                type="button"
+                (click)="selectSection(sec.id)"
+                [class.bg-yellow-50]="activeSection() === sec.id"
+                [class.bg-white]="activeSection() !== sec.id"
+                [class.border-l-4]="true"
+                [class.border-koliss-primary]="activeSection() === sec.id"
+                [class.border-transparent]="activeSection() !== sec.id"
+                [class.text-koliss-primary]="activeSection() === sec.id"
+                [class.text-gray-700]="activeSection() !== sec.id"
+                [class.font-semibold]="activeSection() === sec.id"
+                [class.font-medium]="activeSection() !== sec.id"
+                class="flex-shrink-0 lg:w-full text-left px-5 py-4 hover:bg-yellow-50 transition-all duration-200 whitespace-nowrap text-sm lg:text-base cursor-pointer"
+                style="min-width: 150px; height: 52px;"
+              >
+                <span>{{ sec.label }}</span>
+              </button>
+            }
+          </nav>
+        </div>
+
+        <!-- Panneau de contenu droit -->
+        <div class="flex-1 w-full bg-white p-6 md:p-8 lg:p-10 relative shadow-2xs">
+          <!-- Icône Modifier (Crayon) en haut à droite pour les sections modifiables -->
+          @if (activeSection() === 'personal') {
+            <div class="absolute top-6 right-6 z-10">
+              <button
+                type="button"
+                (click)="toggleEditMode()"
+                [class.bg-koliss-primary]="isEditMode()"
+                [class.text-white]="isEditMode()"
+                [class.text-koliss-primary]="!isEditMode()"
+                [class.border-koliss-primary]="!isEditMode()"
+                class="p-2.5 rounded-md border hover:bg-koliss-primary/10 transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer"
+                [title]="isEditMode() ? 'Annuler la modification' : 'Modifier mes informations'"
+                [attr.aria-label]="isEditMode() ? 'Annuler' : 'Modifier'"
+              >
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" class="stroke-current">
+                  <path d="M14.166 2.5009C14.3849 2.28203 14.6447 2.10842 14.9307 1.98996C15.2167 1.87151 15.5232 1.81055 15.8327 1.81055C16.1422 1.81055 16.4487 1.87151 16.7347 1.98996C17.0206 2.10842 17.2805 2.28203 17.4993 2.5009C17.7182 2.71977 17.8918 2.97961 18.0103 3.26556C18.1287 3.55152 18.1897 3.85804 18.1897 4.16757C18.1897 4.4771 18.1287 4.78362 18.0103 5.06958C17.8918 5.35553 17.7182 5.61537 17.4993 5.83424L6.24935 17.0842L1.66602 18.3342L2.91602 13.7509L14.166 2.5009Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+            </div>
+          }
+
+          <!-- SECTION 1 : INFORMATIONS PERSONNELLES (Screenshots 1 & 4) -->
+          @if (activeSection() === 'personal') {
+            <div>
+              <h2 class="text-xl font-bold text-koliss-primary mb-6">Informations personnelles</h2>
+
+              <form (ngSubmit)="savePersonalInfo()" class="space-y-6">
+                <!-- Informations de base -->
+                <div class="space-y-4">
+                  <h3 class="text-base font-semibold text-gray-700">Informations de base</h3>
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                        Prénom <span class="text-red-600">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        name="firstName"
+                        [(ngModel)]="personalForm.firstName"
+                        [disabled]="!isEditMode()"
+                        placeholder="Votre prénom"
+                        required
+                        class="koliss-input-uniform"
+                      />
+                    </div>
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                        Nom <span class="text-red-600">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        name="lastName"
+                        [(ngModel)]="personalForm.lastName"
+                        [disabled]="!isEditMode()"
+                        placeholder="Votre nom"
+                        required
+                        class="koliss-input-uniform"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Informations de contact -->
+                <div class="space-y-4 pt-2">
+                  <h3 class="text-base font-semibold text-gray-700">Informations de contact</h3>
+                  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 items-start">
+                    <!-- Adresse email -->
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                        Adresse email <span class="text-red-600">*</span>
+                      </label>
+                      <input
+                        type="email"
+                        name="email"
+                        [value]="personalForm.email"
+                        disabled
+                        class="koliss-input-uniform bg-gray-50 text-gray-500 cursor-not-allowed"
+                      />
+                    </div>
+
+                    <!-- Numéro WhatsApp -->
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                        Numéro WhatsApp <span class="text-gray-500 text-xs ml-1">(optionnel)</span>
+                      </label>
+                      <div class="flex items-center gap-2">
+                        <div class="flex items-center gap-1.5 px-2.5 py-2.5 bg-gray-50 border border-gray-200 border-b-[3px] border-b-koliss-secondary rounded-lg shrink-0">
+                          @if (selectedCountry(); as c) {
+                            <img [src]="loadFlag(c.countryCode)" [alt]="c.countryName" class="w-5 h-3.5 object-cover rounded-xs" />
+                            <span class="text-xs font-semibold text-gray-700">{{ c.areaCode || '+221' }}</span>
+                          } @else {
+                            <span class="text-xs font-semibold text-gray-700">+221</span>
+                          }
+                        </div>
+                        <input
+                          type="tel"
+                          name="phone"
+                          [(ngModel)]="personalForm.phone"
+                          [disabled]="!isEditMode()"
+                          placeholder="Votre numéro WhatsApp"
+                          class="koliss-input-uniform flex-1"
+                        />
+                      </div>
+                      <p class="text-xs text-gray-500 mt-1">Ce numéro sera utilisé pour vous contacter via WhatsApp</p>
+                    </div>
+
+                    <!-- Code client -->
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-1.5">Code client</label>
+                      <input
+                        type="text"
+                        [value]="profileCustomer()?.id ? ('C-' + profileCustomer()?.id?.slice(0, 8)?.toUpperCase()) : 'Code client'"
+                        disabled
+                        class="koliss-input-uniform bg-gray-50 text-gray-500 cursor-not-allowed"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Section Adresse -->
+                <div class="space-y-4 pt-2">
+                  <h3 class="text-base font-semibold text-gray-700">Adresse</h3>
+
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                      Adresse complète <span class="text-red-600">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="address"
+                      [(ngModel)]="personalForm.address"
+                      [disabled]="!isEditMode()"
+                      placeholder="Rue, numéro, bâtiment..."
+                      class="koliss-input-uniform"
+                    />
+                  </div>
+
+                  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+                    <!-- Pays -->
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                        Pays <span class="text-red-600">*</span>
+                      </label>
+                      <select
+                        name="country"
+                        [ngModel]="personalForm.countryId"
+                        (ngModelChange)="onCountryChange($event)"
+                        [disabled]="!isEditMode()"
+                        class="koliss-input-uniform cursor-pointer bg-white"
+                      >
+                        <option value="">Sélectionnez un pays</option>
+                        @for (c of countries(); track c.id) {
+                          <option [value]="c.id">
+                            {{ c.countryName }} ({{ c.areaCode || c.countryCode }})
+                          </option>
+                        }
+                      </select>
+                    </div>
+
+                    <!-- Code postal -->
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                        Code postal <span class="text-gray-500 text-xs ml-1">(optionnel)</span>
+                      </label>
+                      <input
+                        type="text"
+                        name="postal"
+                        [(ngModel)]="personalForm.postal"
+                        [disabled]="!isEditMode()"
+                        placeholder="Ex: 12345"
+                        class="koliss-input-uniform"
+                      />
+                    </div>
+
+                    <!-- Ville -->
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                        Ville <span class="text-red-600">*</span>
+                      </label>
+                      <select
+                        name="city"
+                        [(ngModel)]="personalForm.cityId"
+                        [disabled]="!isEditMode() || !personalForm.countryId"
+                        class="koliss-input-uniform cursor-pointer bg-white"
+                      >
+                        <option value="">Sélectionnez une ville</option>
+                        @for (ct of cities(); track ct.id) {
+                          <option [value]="ct.id">{{ ct.cityName }}</option>
+                        }
+                      </select>
+                      @if (!personalForm.countryId && isEditMode()) {
+                        <p class="text-xs text-gray-500 mt-1">Veuillez d'abord sélectionner un pays</p>
+                      }
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Actions en mode édition (Screenshot 4) -->
+                @if (isEditMode()) {
+                  <div class="flex flex-col sm:flex-row gap-4 pt-6 border-t border-gray-200">
+                    <button
+                      type="submit"
+                      [disabled]="isSavingProfile()"
+                      class="px-6 py-3 rounded-lg font-bold text-koliss-text bg-koliss-secondary hover:bg-koliss-secondary-dark transition-all duration-200 shadow-sm cursor-pointer disabled:opacity-50"
+                    >
+                      {{ isSavingProfile() ? 'Enregistrement...' : 'Enregistrer les modifications' }}
+                    </button>
+                    <button
+                      type="button"
+                      (click)="cancelEdit()"
+                      class="px-6 py-3 rounded-lg font-bold text-koliss-primary bg-koliss-secondary/30 hover:bg-koliss-secondary/50 border border-koliss-primary/40 transition-all duration-200 cursor-pointer"
+                    >
+                      Annuler
+                    </button>
+                  </div>
+                }
+
+                <!-- Message d'alerte succès/erreur -->
+                @if (profileMessage(); as msg) {
+                  <div
+                    class="p-4 rounded-lg text-sm font-medium mt-4"
+                    [class.bg-green-50]="profileMessageType() === 'success'"
+                    [class.text-green-800]="profileMessageType() === 'success'"
+                    [class.border]="true"
+                    [class.border-green-200]="profileMessageType() === 'success'"
+                    [class.bg-red-50]="profileMessageType() === 'error'"
+                    [class.text-red-800]="profileMessageType() === 'error'"
+                    [class.border-red-200]="profileMessageType() === 'error'"
+                  >
+                    {{ msg }}
+                  </div>
+                }
+              </form>
+            </div>
+          }
+
+          <!-- SECTION 2 : IDENTIFIANTS DE CONNEXION (Screenshot 5) -->
+          @if (activeSection() === 'login') {
+            <div class="space-y-6">
+              <h2 class="text-xl font-bold text-koliss-primary mb-6">Identifiants de connexion</h2>
+
+              <!-- Encadré bleu informatif Keycloak -->
+              <div class="bg-blue-50/70 border border-blue-200 rounded-xl p-5">
+                <div class="flex items-start gap-3.5">
+                  <div class="w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center shrink-0 mt-0.5 font-bold text-xs">
+                    i
+                  </div>
+                  <div>
+                    <h4 class="text-sm font-bold text-gray-900 mb-1">Gestion de vos identifiants</h4>
+                    <p class="text-sm text-gray-600 leading-relaxed">
+                      Pour modifier vos identifiants de connexion (email, mot de passe), veuillez utiliser le gestionnaire de compte Keycloak.
+                      Cliquez sur le bouton ci-dessous pour accéder à la page de gestion de votre compte.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Informations actuelles -->
+              <div class="space-y-4">
+                <h3 class="text-base font-semibold text-gray-700">Informations actuelles</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Adresse email actuelle</label>
+                    <div class="koliss-input-uniform bg-gray-50 flex items-center text-gray-800">
+                      {{ user()?.email || personalForm.email || 'Non disponible' }}
+                    </div>
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Statut du compte</label>
+                    <div class="koliss-input-uniform bg-gray-50 flex items-center gap-2">
+                      <span class="w-2.5 h-2.5 rounded-full bg-green-500"></span>
+                      <span class="text-gray-800 font-medium">Actif</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Modifier mes identifiants -->
+              <div class="space-y-4 pt-4 border-t border-gray-100">
+                <h3 class="text-base font-semibold text-gray-700">Modifier mes identifiants</h3>
+                <div class="bg-gray-50/70 border border-gray-200 rounded-xl p-6">
+                  <p class="text-sm text-gray-700 mb-4">
+                    Vous pouvez modifier votre email, mot de passe et autres paramètres de sécurité depuis le gestionnaire de compte.
+                  </p>
+                  <button
+                    type="button"
+                    (click)="openKeycloakAccount()"
+                    class="px-6 py-3 rounded-lg font-bold text-koliss-text bg-koliss-secondary hover:bg-koliss-secondary-dark transition-all duration-200 shadow-sm cursor-pointer"
+                  >
+                    Accéder au gestionnaire de compte
+                  </button>
+                  <p class="text-xs text-gray-500 mt-3">
+                    Vous serez redirigé vers une page sécurisée pour gérer vos identifiants.
+                  </p>
+                </div>
+              </div>
+            </div>
+          }
+
+          <!-- SECTION 4 : TÉLÉCHARGER MES DONNÉES (Screenshot 2) -->
+          @if (activeSection() === 'download') {
+            <div class="space-y-6">
+              <h2 class="text-xl font-bold text-koliss-primary mb-6">Télécharger mes données de profil</h2>
+
+              <!-- Encadré jaune informatif -->
+              <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
+                <p class="text-gray-700 mb-4 text-sm md:text-base leading-relaxed">
+                  Vous pouvez télécharger une copie de toutes vos données personnelles stockées sur notre plateforme.
+                  Cela inclut vos informations de profil, historique de commandes, adresses enregistrées et préférences.
+                </p>
+                <p class="text-sm text-gray-600">
+                  Le fichier sera généré au format JSON et envoyé à votre adresse email enregistrée.
+                </p>
+              </div>
+
+              <div>
+                <button
+                  type="button"
+                  (click)="downloadUserData()"
+                  [disabled]="isDownloadingData()"
+                  class="px-8 py-3.5 rounded-lg font-bold text-koliss-text bg-koliss-secondary hover:bg-koliss-secondary-dark transition-all duration-200 shadow-sm cursor-pointer disabled:opacity-50"
+                >
+                  {{ isDownloadingData() ? 'Téléchargement en cours...' : 'Télécharger' }}
+                </button>
+              </div>
+
+              @if (downloadSuccess(); as msg) {
+                <div class="p-4 rounded-lg bg-green-50 text-green-800 border border-green-200 text-sm font-medium">
+                  {{ msg }}
+                </div>
+              }
+            </div>
+          }
+
+          <!-- SECTION 5 : SUPPRIMER MON COMPTE (Screenshot 3) -->
+          @if (activeSection() === 'delete') {
+            <div class="space-y-6">
+              <h2 class="text-xl font-bold text-red-600 mb-6">Supprimer mon compte</h2>
+
+              <!-- Encadré d'avertissement rouge -->
+              <div class="bg-red-50 border border-red-200 rounded-lg p-6">
+                <h3 class="text-lg font-bold text-red-800 mb-3 flex items-center gap-2">
+                  <span>⚠️</span> Attention - Action irréversible
+                </h3>
+                <p class="text-gray-700 mb-3 text-sm md:text-base">
+                  La suppression de votre compte entraînera :
+                </p>
+                <ul class="list-disc list-inside text-gray-700 space-y-1.5 mb-4 text-sm md:text-base pl-2">
+                  <li>La suppression définitive de toutes vos données personnelles</li>
+                  <li>L'annulation de tous vos envois en cours</li>
+                  <li>La perte de votre historique de commandes</li>
+                  <li>L'impossibilité de récupérer votre compte</li>
+                </ul>
+                <p class="text-sm text-gray-600 font-medium">
+                  Cette action est définitive et ne peut pas être annulée.
+                </p>
+              </div>
+
+              <!-- Bouton initial -->
+              @if (!showDeleteConfirm()) {
+                <div>
+                  <button
+                    type="button"
+                    (click)="showDeleteModal()"
+                    class="px-8 py-3.5 rounded-lg font-bold text-koliss-text bg-koliss-secondary hover:bg-koliss-secondary-dark transition-all duration-200 shadow-sm cursor-pointer"
+                  >
+                    Supprimer mon compte
+                  </button>
+                </div>
+              }
+
+              <!-- Formulaire de confirmation (SUPPRIMER) -->
+              @if (showDeleteConfirm()) {
+                <div class="bg-white border border-gray-200 rounded-lg p-6 space-y-4">
+                  <h3 class="text-lg font-bold text-gray-900">Confirmer la suppression</h3>
+                  <p class="text-gray-700 text-sm md:text-base">
+                    Pour confirmer la suppression de votre compte, veuillez taper
+                    <strong class="text-red-600 font-extrabold">SUPPRIMER</strong> dans le champ ci-dessous :
+                  </p>
+
+                  <input
+                    type="text"
+                    name="confirmText"
+                    [ngModel]="deleteConfirmationText()"
+                    (ngModelChange)="deleteConfirmationText.set($event)"
+                    placeholder="Tapez SUPPRIMER"
+                    class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 text-sm"
+                  />
+
+                  <div class="flex flex-wrap gap-4 pt-2">
+                    <button
+                      type="button"
+                      (click)="confirmAccountDeletion()"
+                      [disabled]="deleteConfirmationText().trim().toUpperCase() !== 'SUPPRIMER' || isDeletingAccount()"
+                      class="px-6 py-3 rounded-lg font-bold text-white bg-red-600 hover:bg-red-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-all duration-200 cursor-pointer"
+                    >
+                      {{ isDeletingAccount() ? 'Suppression en cours...' : 'Confirmer la suppression' }}
+                    </button>
+                    <button
+                      type="button"
+                      (click)="cancelDelete()"
+                      class="px-6 py-3 rounded-lg font-bold text-gray-700 bg-gray-100 hover:bg-gray-200 border border-gray-300 transition-all duration-200 cursor-pointer"
+                    >
+                      Annuler
+                    </button>
+                  </div>
+                </div>
+              }
+            </div>
+          }
+        </div>
+      </div>
+    }
+
+    <!-- ========================================================================= -->
+    <!-- ONGLET 2 : MES DEVIS (Dossiers de Sourcing)                                -->
+    <!-- ========================================================================= -->
+    @if (activeTab() === 'quotes') {
+      <div class="bg-white p-6 md:p-8 shadow-2xs rounded-xl space-y-6">
+        <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-gray-100 pb-5">
+          <div>
+            <h2 class="text-xl md:text-2xl font-bold text-koliss-primary">Mes demandes de devis</h2>
+            <p class="text-sm text-gray-600 mt-0.5">
+              Suivez l'avancement de vos demandes de sourcing international et validez les offres reçues.
+            </p>
+          </div>
+          <a
+            routerLink="/devis"
+            class="px-5 py-2.5 rounded-lg bg-koliss-secondary font-bold text-koliss-text hover:bg-koliss-secondary-dark text-sm transition-all shrink-0 flex items-center gap-2"
+          >
+            <i class="pi pi-plus text-xs"></i>
+            Nouveau devis
+          </a>
+        </div>
+
+        @if (loadingQuotes()) {
+          <div class="py-16 text-center text-gray-500">
+            <i class="pi pi-spin pi-spinner text-3xl text-koliss-primary mb-3"></i>
+            <p>Chargement de vos demandes de devis...</p>
+          </div>
+        } @else if (errorQuotes(); as err) {
+          <div class="p-4 rounded-lg bg-red-50 text-red-800 border border-red-200 text-sm">
+            {{ err }}
+          </div>
+        } @else if (quotes().length === 0) {
+          <div class="py-16 text-center bg-gray-50 rounded-xl space-y-4">
+            <i class="pi pi-folder-open text-4xl text-gray-400"></i>
+            <h3 class="text-lg font-bold text-gray-800">Aucun devis pour le moment</h3>
+            <p class="text-sm text-gray-500 max-w-md mx-auto">
+              Vous n'avez pas encore envoyé de demande de sourcing. Nos équipes basées à Ningbo, Shenzhen et Dakar sont prêtes à traiter votre projet.
+            </p>
+            <a routerLink="/devis" class="inline-block px-6 py-2.5 rounded-lg bg-koliss-secondary font-bold text-sm text-koliss-text">
+              Demander un devis
+            </a>
+          </div>
+        } @else {
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm border-collapse">
+              <thead>
+                <tr class="border-b border-gray-200 text-gray-500 text-xs uppercase bg-gray-50/50">
+                  <th class="py-3 px-4 font-semibold">Référence</th>
+                  <th class="py-3 px-4 font-semibold">Date</th>
+                  <th class="py-3 px-4 font-semibold">Destination</th>
+                  <th class="py-3 px-4 font-semibold">Formule / Mode</th>
+                  <th class="py-3 px-4 font-semibold">Statut</th>
+                  <th class="py-3 px-4 font-semibold text-right">Offre reçue</th>
+                  <th class="py-3 px-4 font-semibold text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-100">
+                @for (q of quotes(); track q.id) {
+                  <tr class="hover:bg-gray-50/60 transition-colors cursor-pointer" (click)="openQuoteDetail(q)">
+                    <td class="py-3.5 px-4 font-bold text-koliss-primary">
+                      {{ q.reference }}
+                    </td>
+                    <td class="py-3.5 px-4 text-gray-600">
+                      {{ q.createdAt | date: 'dd/MM/yyyy' }}
+                    </td>
+                    <td class="py-3.5 px-4 text-gray-800">
+                      {{ q.destinationCountry }} <span class="text-gray-400">({{ q.destinationCity }})</span>
+                    </td>
+                    <td class="py-3.5 px-4">
+                      <div class="text-xs font-semibold text-gray-700">{{ getFormulaLabel(q.formula) }}</div>
+                      <div class="text-2xs text-gray-400">{{ getDeliveryLabel(q.deliveryMode) }}</div>
+                    </td>
+                    <td class="py-3.5 px-4">
+                      <span
+                        class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold border"
+                        [class]="getStatusMeta(q.status).badgeClass"
+                      >
+                        <span class="w-1.5 h-1.5 rounded-full" [class]="getStatusMeta(q.status).dotClass"></span>
+                        {{ getStatusMeta(q.status).label }}
+                      </span>
+                    </td>
+                    <td class="py-3.5 px-4 text-right">
+                      @if (q.totalQuotedAmount) {
+                        <span class="font-extrabold text-koliss-primary">
+                          {{ q.totalQuotedAmount | currency: 'USD':'symbol':'1.2-2' }}
+                        </span>
+                      } @else {
+                        <span class="text-xs text-gray-400 italic">En chiffrage</span>
+                      }
+                    </td>
+                    <td class="py-3.5 px-4 text-right" (click)="$event.stopPropagation()">
+                      <div class="flex items-center justify-end gap-2">
+                        @if (q.status === 'OFFER_SENT' && q.totalQuotedAmount) {
+                          <button
+                            type="button"
+                            (click)="acceptOffer(q, $event)"
+                            [disabled]="actionInProgress() === q.id"
+                            class="px-3 py-1.5 rounded-md bg-green-600 hover:bg-green-700 text-white text-xs font-bold transition-all"
+                            title="Accepter l'offre commerciale"
+                          >
+                            Accepter
+                          </button>
+                          <button
+                            type="button"
+                            (click)="rejectOffer(q, $event)"
+                            [disabled]="actionInProgress() === q.id"
+                            class="px-3 py-1.5 rounded-md bg-gray-200 hover:bg-gray-300 text-gray-800 text-xs font-bold transition-all"
+                            title="Refuser ou réviser l'offre"
+                          >
+                            Réviser
+                          </button>
+                        }
+                        <button
+                          type="button"
+                          (click)="openQuoteDetail(q)"
+                          class="p-1.5 text-gray-500 hover:text-koliss-primary hover:bg-gray-100 rounded-md transition-all"
+                          title="Voir le détail"
+                        >
+                          <i class="pi pi-eye"></i>
+                        </button>
+                        <a
+                          [href]="getQuoteWhatsAppUrl(q)"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          class="p-1.5 text-green-600 hover:bg-green-50 rounded-md transition-all"
+                          title="Échanger sur WhatsApp"
+                        >
+                          <i class="pi pi-whatsapp"></i>
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        }
+      </div>
+    }
+
+    <!-- ========================================================================= -->
+    <!-- ONGLET 4 : MES FACTURES (Sourcing Invoices)                               -->
+    <!-- ========================================================================= -->
+    @if (activeTab() === 'invoices') {
+      <div class="bg-white p-6 md:p-8 shadow-2xs rounded-xl space-y-6">
+        <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-gray-100 pb-5">
+          <div>
+            <h2 class="text-xl md:text-2xl font-bold text-koliss-primary">Mes factures Sourcing</h2>
+            <p class="text-sm text-gray-600 mt-0.5">
+              Consultez et téléchargez vos factures proforma et factures définitives pour vos commandes de sourcing.
+            </p>
+          </div>
+        </div>
+
+        @if (loadingInvoices()) {
+          <div class="py-16 text-center text-gray-500">
+            <i class="pi pi-spin pi-spinner text-3xl text-koliss-primary mb-3"></i>
+            <p>Chargement de vos factures...</p>
+          </div>
+        } @else if (errorInvoices(); as err) {
+          <div class="p-4 rounded-lg bg-red-50 text-red-800 border border-red-200 text-sm">
+            {{ err }}
+          </div>
+        } @else if (invoices().length === 0) {
+          <div class="py-16 text-center bg-gray-50 rounded-xl space-y-3">
+            <i class="pi pi-receipt text-4xl text-gray-400"></i>
+            <h3 class="text-lg font-bold text-gray-800">Aucune facture émise</h3>
+            <p class="text-sm text-gray-500 max-w-md mx-auto">
+              Une fois votre devis chiffré et validé par nos équipes, votre facture proforma apparaîtra directement ici.
+            </p>
+          </div>
+        } @else {
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm border-collapse">
+              <thead>
+                <tr class="border-b border-gray-200 text-gray-500 text-xs uppercase bg-gray-50/50">
+                  <th class="py-3 px-4 font-semibold">N° Facture</th>
+                  <th class="py-3 px-4 font-semibold">Type</th>
+                  <th class="py-3 px-4 font-semibold">Date d'émission</th>
+                  <th class="py-3 px-4 font-semibold">Statut</th>
+                  <th class="py-3 px-4 font-semibold text-right">Montant USD</th>
+                  <th class="py-3 px-4 font-semibold text-right">Montant CFA</th>
+                  <th class="py-3 px-4 font-semibold text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-100">
+                @for (inv of invoices(); track inv.id) {
+                  <tr class="hover:bg-gray-50/60 transition-colors">
+                    <td class="py-3.5 px-4 font-bold text-koliss-primary">
+                      {{ inv.invoiceNumber }}
+                    </td>
+                    <td class="py-3.5 px-4">
+                      <span class="px-2 py-0.5 rounded text-xs font-semibold bg-gray-100 text-gray-700">
+                        {{ getInvoiceTypeLabel(inv.invoiceType) }}
+                      </span>
+                    </td>
+                    <td class="py-3.5 px-4 text-gray-600">
+                      {{ inv.issueDate | date: 'dd/MM/yyyy' }}
+                    </td>
+                    <td class="py-3.5 px-4">
+                      <span
+                        class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold border"
+                        [class]="getInvoiceStatusMeta(inv.status).badgeClass"
+                      >
+                        <span class="w-1.5 h-1.5 rounded-full" [class]="getInvoiceStatusMeta(inv.status).dotClass"></span>
+                        {{ getInvoiceStatusMeta(inv.status).label }}
+                      </span>
+                    </td>
+                    <td class="py-3.5 px-4 text-right font-extrabold text-koliss-text">
+                      {{ inv.totalUsd | currency: 'USD':'symbol':'1.2-2' }}
+                    </td>
+                    <td class="py-3.5 px-4 text-right font-semibold text-gray-600">
+                      {{ inv.totalCfa | number: '1.0-0' }} FCFA
+                    </td>
+                    <td class="py-3.5 px-4 text-right">
+                      <a
+                        [href]="whatsappUrl"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="px-3 py-1.5 rounded-md bg-green-50 text-green-700 hover:bg-green-100 text-xs font-bold inline-flex items-center gap-1.5 transition-all"
+                      >
+                        <i class="pi pi-whatsapp"></i>
+                        Payer / Régler
+                      </a>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</main>
+
+<!-- Modale de détail du devis -->
+@if (selectedQuote(); as quote) {
+  <app-quote-detail-dialog
+    [quote]="quote"
+    (closed)="closeQuoteDetail()"
+  />
+}

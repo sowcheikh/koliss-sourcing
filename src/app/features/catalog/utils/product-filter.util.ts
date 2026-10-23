@@ -68,7 +68,7 @@ export function sortProducts(products: readonly Product[], sort: SortKey): Produ
     case 'moq-asc':
       return sorted.sort((a, b) => getMoq(a) - getMoq(b));
     case 'newest':
-      return sorted.sort((a, b) => b.id - a.id);
+      return sorted.sort((a, b) => String(b.id).localeCompare(String(a.id)));
     case 'popularity':
     default:
       return sorted.sort((a, b) => b.reviewCount - a.reviewCount);

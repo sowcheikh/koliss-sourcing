@@ -1,0 +1,217 @@
+<div class="min-h-screen bg-koliss-bg flex flex-col justify-center py-8 px-4 sm:px-6 lg:px-8">
+  <div class="mx-auto w-full max-w-5xl overflow-hidden rounded-3xl border border-koliss-border bg-white shadow-xl grid grid-cols-1 lg:grid-cols-12">
+    <!-- Formulaire (Gauche) -->
+    <div class="p-8 sm:p-12 lg:col-span-7 flex flex-col justify-center">
+      <div>
+        <a routerLink="/" class="inline-flex items-center gap-3 lg:hidden mb-6">
+          <img src="assets/images/logo-koliss-Banniere.png" alt="KOLISS" class="h-10 w-auto object-contain" />
+          <span class="border-l-2 border-koliss-secondary pl-3 text-xs font-extrabold uppercase tracking-widest text-koliss-primary">
+            Sourcing
+          </span>
+        </a>
+
+        <h1 class="text-2xl font-extrabold text-koliss-text sm:text-3xl">
+          Bon retour parmi nous !
+        </h1>
+        <p class="mt-2 text-sm text-koliss-text-muted">
+          Connectez-vous pour suivre vos devis, commandes d'usine et tarifs dégressifs.
+        </p>
+
+        <!-- Boutons OAuth Sociaux (Google / Facebook) -->
+        <p class="mt-6 text-xs font-bold uppercase tracking-wider text-koliss-text-soft">
+          Continuer avec
+        </p>
+        <div class="mt-3 grid grid-cols-2 gap-3">
+          <button
+            type="button"
+            class="flex items-center justify-center gap-2.5 rounded-xl border border-koliss-border bg-white px-4 py-3 text-sm font-bold text-koliss-text transition-all hover:border-koliss-primary hover:bg-koliss-bg disabled:cursor-not-allowed disabled:opacity-50"
+            [disabled]="oauthLoading() !== null || submitting()"
+            (click)="handleGoogle()"
+            aria-label="Continuer avec Google"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                fill="#EA4335"
+                d="M12 10.2v3.6h5.1c-.2 1.2-.9 2.2-1.9 2.9l3.1 2.4c1.8-1.7 2.8-4.1 2.8-7 0-.7-.1-1.3-.2-1.9H12z"
+              />
+              <path
+                fill="#34A853"
+                d="M5.3 14.3 4.4 15l-2.5 1.9C3.5 20.5 7.4 23 12 23c2.7 0 5-.9 6.7-2.4l-3.1-2.4c-.9.6-2 .9-3.6.9-2.8 0-5.1-1.9-5.9-4.4z"
+              />
+              <path
+                fill="#4A90E2"
+                d="M2 7.1C1.4 8.3 1 9.6 1 11s.4 2.7 1 3.9c0 .1 3.3-2.5 3.3-2.5-.2-.6-.3-1.2-.3-1.4 0-.5.1-1 .3-1.4L2 7.1z"
+              />
+              <path
+                fill="#FBBC05"
+                d="M12 4.6c1.5 0 2.8.5 3.8 1.5l2.8-2.8C16.9 1.5 14.7.5 12 .5 7.4.5 3.5 3 1.9 7.1L5.3 9.7C6.1 7.1 8.4 4.6 12 4.6z"
+              />
+            </svg>
+            <span>{{ oauthLoading() === 'google' ? 'Connexion…' : 'Google' }}</span>
+          </button>
+
+          <button
+            type="button"
+            class="flex items-center justify-center gap-2.5 rounded-xl border border-koliss-border bg-white px-4 py-3 text-sm font-bold text-koliss-text transition-all hover:border-koliss-primary hover:bg-koliss-bg disabled:cursor-not-allowed disabled:opacity-50"
+            [disabled]="oauthLoading() !== null || submitting()"
+            (click)="handleFacebook()"
+            aria-label="Continuer avec Facebook"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                fill="#1877F2"
+                d="M24 12.07C24 5.41 18.63.07 12 .07S0 5.41 0 12.07c0 5.99 4.39 10.95 10.13 11.85v-8.39H7.08v-3.46h3.05V9.41c0-3.01 1.79-4.67 4.53-4.67 1.31 0 2.68.23 2.68.23v2.95h-1.51c-1.49 0-1.95.93-1.95 1.87v2.25h3.32l-.53 3.46h-2.79v8.39C19.61 23.02 24 18.06 24 12.07z"
+              />
+            </svg>
+            <span>{{ oauthLoading() === 'facebook' ? 'Connexion…' : 'Facebook' }}</span>
+          </button>
+        </div>
+
+        <div class="relative my-6 flex items-center justify-center">
+          <div class="w-full border-t border-koliss-border"></div>
+          <span class="absolute bg-white px-3 text-xs font-bold uppercase tracking-wider text-koliss-text-soft">
+            Ou par identifiant
+          </span>
+        </div>
+
+        <!-- Formulaire Email/Password -->
+        <form [formGroup]="form" (ngSubmit)="submit()" class="space-y-4">
+          <div>
+            <label for="login-id" class="k-label">Identifiant ou adresse e-mail</label>
+            <input
+              id="login-id"
+              type="text"
+              class="k-input"
+              formControlName="login"
+              placeholder="votre.email@entreprise.com"
+              autocomplete="username"
+            />
+            @if (form.controls.login.touched && form.controls.login.invalid) {
+              <p class="k-field-error">Identifiant ou e-mail requis.</p>
+            }
+          </div>
+
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <label for="login-password" class="k-label mb-0">Mot de passe</label>
+              <a routerLink="/" fragment="contact" class="text-xs font-bold text-koliss-primary hover:underline">
+                Mot de passe oublié ?
+              </a>
+            </div>
+            <div class="relative">
+              <input
+                id="login-password"
+                [type]="showPassword() ? 'text' : 'password'"
+                class="k-input pr-12"
+                formControlName="password"
+                placeholder="Entrez votre mot de passe"
+                autocomplete="current-password"
+              />
+              <button
+                type="button"
+                class="absolute right-3 top-1/2 -translate-y-1/2 text-koliss-text-soft hover:text-koliss-primary"
+                (click)="togglePassword()"
+                [attr.aria-label]="showPassword() ? 'Masquer' : 'Afficher'"
+              >
+                <i class="pi text-base" [class]="showPassword() ? 'pi-eye-slash' : 'pi-eye'" aria-hidden="true"></i>
+              </button>
+            </div>
+            @if (form.controls.password.touched && form.controls.password.invalid) {
+              <p class="k-field-error">Mot de passe requis (4 caractères min.).</p>
+            }
+          </div>
+
+          @if (successMessage()) {
+            <div class="rounded-xl bg-emerald-50 border border-emerald-200 p-3 text-xs font-semibold text-emerald-800">
+              <i class="pi pi-check-circle mr-1 text-emerald-600"></i>
+              {{ successMessage() }}
+            </div>
+          }
+
+          @if (globalError()) {
+            <div class="rounded-xl bg-rose-50 border border-rose-200 p-3 text-xs font-semibold text-rose-800" role="alert">
+              <i class="pi pi-exclamation-triangle mr-1 text-rose-600"></i>
+              {{ globalError() }}
+            </div>
+          }
+
+          <button
+            type="submit"
+            class="k-btn k-btn--yellow w-full justify-center text-base font-bold shadow-md"
+            [disabled]="submitting() || oauthLoading() !== null"
+          >
+            @if (submitting()) {
+              <i class="pi pi-spin pi-spinner mr-2" aria-hidden="true"></i>
+              Connexion en cours…
+            } @else {
+              <i class="pi pi-sign-in mr-2" aria-hidden="true"></i>
+              Se connecter
+            }
+          </button>
+        </form>
+
+        <p class="mt-8 text-center text-sm text-koliss-text-muted">
+          Vous n'avez pas encore de compte client ?
+          <a
+            routerLink="/inscription"
+            [queryParams]="returnUrl ? { returnUrl: returnUrl } : null"
+            class="font-bold text-koliss-primary hover:underline ml-1"
+          >
+            Créer un compte gratuit
+          </a>
+        </p>
+      </div>
+    </div>
+
+    <!-- Panneau Marque & Réassurance (Droite) -->
+    <aside class="hidden lg:flex lg:col-span-5 bg-koliss-primary p-12 text-white flex-col justify-between relative overflow-hidden">
+      <!-- Forme décorative de fond -->
+      <div class="absolute -right-16 -top-16 h-64 w-64 rounded-full bg-white/5 pointer-events-none"></div>
+      <div class="absolute -bottom-20 -left-20 h-72 w-72 rounded-full bg-koliss-secondary/10 pointer-events-none"></div>
+
+      <div class="relative z-10">
+        <a routerLink="/" class="inline-flex items-center gap-3">
+          <img src="assets/images/logo-koliss-Banniere.png" alt="KOLISS" class="h-14 w-auto object-contain" />
+          <span class="border-l-2 border-koliss-secondary pl-3 text-xs font-extrabold uppercase tracking-widest text-koliss-secondary">
+            Sourcing
+          </span>
+        </a>
+
+        <div class="mt-12 space-y-4">
+          <span class="inline-block rounded-full bg-white/10 px-3 py-1 text-xs font-bold text-koliss-secondary">
+            B2B Gros Asie–Afrique
+          </span>
+          <h2 class="text-2xl font-extrabold leading-snug">
+            Accédez directement aux <span class="text-koliss-secondary">meilleurs fabricants</span> certifiés.
+          </h2>
+          <p class="text-sm text-white/75 leading-relaxed">
+            KOLISS Sourcing vous connecte sans intermédiaire aux usines de Guangzhou, Shenzhen et Yiwu avec inspection qualité systématique.
+          </p>
+        </div>
+
+        <ul class="mt-8 space-y-3.5 text-xs text-white/85">
+          <li class="flex items-center gap-3">
+            <span class="flex h-6 w-6 items-center justify-center rounded-full bg-koliss-secondary text-koliss-primary font-bold">✓</span>
+            <span>Négociation des prix usine et MOQ réduits dès 5 unités</span>
+          </li>
+          <li class="flex items-center gap-3">
+            <span class="flex h-6 w-6 items-center justify-center rounded-full bg-koliss-secondary text-koliss-primary font-bold">✓</span>
+            <span>Contrôle qualité photos et vidéos avant mise en conteneur</span>
+          </li>
+          <li class="flex items-center gap-3">
+            <span class="flex h-6 w-6 items-center justify-center rounded-full bg-koliss-secondary text-koliss-primary font-bold">✓</span>
+            <span>Sécurisation escrow : l'usine est payée après conformité</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="relative z-10 pt-8 border-t border-white/10 flex items-center justify-between text-xs text-white/70">
+        <span>© KOLISS Sourcing</span>
+        <a routerLink="/" class="inline-flex items-center gap-1 font-bold text-white hover:text-koliss-secondary transition-colors">
+          <i class="pi pi-arrow-left text-[10px]" aria-hidden="true"></i>
+          Retour à l'accueil
+        </a>
+      </div>
+    </aside>
+  </div>
+</div>

@@ -1,0 +1,213 @@
+<div
+  class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 overflow-y-auto"
+  role="dialog"
+  aria-modal="true"
+  [attr.aria-labelledby]="'quote-dialog-title-' + quote().id"
+  (click)="onBackdropClick($event)"
+>
+  <div class="relative w-full max-w-2xl overflow-hidden rounded-3xl bg-white shadow-2xl border border-koliss-border my-8 animate-in fade-in zoom-in-95 duration-200">
+    <!-- En-tête de la modale avec dégradé marine KOLISS -->
+    <div class="relative bg-gradient-to-r from-koliss-primary to-[#162B65] p-6 text-white md:p-7">
+      <div class="flex items-start justify-between gap-4">
+        <div>
+          <span class="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold text-koliss-secondary backdrop-blur-sm">
+            <i class="pi pi-briefcase text-xs" aria-hidden="true"></i>
+            Dossier de sourcing B2B
+          </span>
+          <h2 [id]="'quote-dialog-title-' + quote().id" class="mt-2 text-2xl font-extrabold tracking-tight text-white md:text-3xl">
+            {{ quote().reference }}
+          </h2>
+          <p class="mt-1 text-xs text-white/70">
+            Enregistré le {{ quote().createdAt | date: 'dd MMMM yyyy à HH:mm' }}
+          </p>
+        </div>
+
+        <button
+          type="button"
+          class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/10 text-white/80 transition-colors hover:bg-white/20 hover:text-white focus:outline-none"
+          aria-label="Fermer la boîte de dialogue"
+          (click)="close()"
+        >
+          <i class="pi pi-times text-sm" aria-hidden="true"></i>
+        </button>
+      </div>
+
+      <!-- Statut & badge en bannière -->
+      <div class="mt-5 flex flex-wrap items-center gap-3">
+        <span
+          class="inline-flex items-center gap-2 rounded-xl border px-3 py-1.5 text-xs font-bold shadow-sm"
+          [class]="statusMeta().badgeClass"
+        >
+          <span class="h-2 w-2 rounded-full animate-pulse" [class]="statusMeta().dotClass"></span>
+          <i [class]="'pi ' + statusMeta().icon" aria-hidden="true"></i>
+          {{ statusMeta().label }}
+        </span>
+
+        <span class="inline-flex items-center gap-1.5 rounded-xl bg-white/10 px-3 py-1.5 text-xs font-medium text-white/90">
+          <i class="pi pi-box" aria-hidden="true"></i>
+          {{ formulaLabel() }}
+        </span>
+
+        <span class="inline-flex items-center gap-1.5 rounded-xl bg-white/10 px-3 py-1.5 text-xs font-medium text-white/90">
+          <i class="pi pi-send" aria-hidden="true"></i>
+          {{ deliveryLabel() }}
+        </span>
+      </div>
+    </div>
+
+    <!-- Corps de la modale -->
+    <div class="max-h-[calc(85vh-200px)] overflow-y-auto p-6 space-y-6 md:p-7">
+      <!-- Synthèse logistique et destination -->
+      <div class="grid grid-cols-2 gap-4 rounded-2xl bg-koliss-bg p-4.5 text-xs sm:grid-cols-4">
+        <div>
+          <span class="text-koliss-text-muted block">Destination</span>
+          <strong class="text-koliss-text font-bold text-sm block mt-0.5">
+            {{ quote().destinationCity ? quote().destinationCity + ', ' : '' }}{{ quote().destinationCountry }}
+          </strong>
+        </div>
+        <div>
+          <span class="text-koliss-text-muted block">Budget estimé</span>
+          <strong class="text-koliss-text font-bold text-sm block mt-0.5">
+            {{ quote().estimatedBudget || 'Non précisé' }}
+          </strong>
+        </div>
+        <div>
+          <span class="text-koliss-text-muted block">Acheminement</span>
+          <strong class="text-koliss-text font-bold text-sm block mt-0.5">
+            {{ deliveryLabel() }}
+          </strong>
+        </div>
+        <div>
+          <span class="text-koliss-text-muted block">Articles</span>
+          <strong class="text-koliss-text font-bold text-sm block mt-0.5">
+            {{ quote().items.length }} référence(s)
+          </strong>
+        </div>
+      </div>
+
+      <!-- Liste détaillée des articles -->
+      <div class="space-y-3">
+        <div class="flex items-center justify-between">
+          <h3 class="text-sm font-extrabold text-koliss-primary flex items-center gap-2">
+            <i class="pi pi-list text-koliss-secondary" aria-hidden="true"></i>
+            Articles et spécifications demandés
+          </h3>
+          <span class="text-xs text-koliss-text-soft">
+            Total : {{ quote().items.length }} article{{ quote().items.length > 1 ? 's' : '' }}
+          </span>
+        </div>
+
+        <div class="space-y-2.5">
+          @for (item of quote().items; track item.id; let idx = $index) {
+            <div class="rounded-2xl border border-koliss-border bg-slate-50/70 p-4 transition-colors hover:bg-slate-50">
+              <div class="flex items-start justify-between gap-3">
+                <div class="flex items-start gap-3">
+                  <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-koliss-primary text-xs font-bold text-white">
+                    {{ idx + 1 }}
+                  </div>
+                  <div>
+                    <h4 class="text-sm font-bold text-koliss-text">
+                      {{ item.productName }}
+                    </h4>
+                    @if (item.specifications) {
+                      <p class="mt-1 text-xs text-koliss-text-soft leading-relaxed">
+                        <span class="font-semibold text-koliss-text">Spécifications :</span> {{ item.specifications }}
+                      </p>
+                    }
+                  </div>
+                </div>
+
+                <div class="text-right shrink-0">
+                  <span class="inline-block rounded-lg bg-white border border-koliss-border px-2.5 py-1 text-xs font-extrabold text-koliss-primary shadow-2xs">
+                    {{ item.quantity }} {{ item.unit }}
+                  </span>
+                  @if (item.targetPrice) {
+                    <p class="mt-1 text-[11px] text-koliss-text-muted">
+                      Cible: <strong>{{ item.targetPrice | currency: 'USD' : 'symbol' : '1.2-2' }}</strong>
+                    </p>
+                  }
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Notes et instructions particulières -->
+      @if (quote().notes) {
+        <div class="space-y-2">
+          <h3 class="text-sm font-extrabold text-koliss-primary flex items-center gap-2">
+            <i class="pi pi-comment text-koliss-secondary" aria-hidden="true"></i>
+            Notes & Instructions de négociation
+          </h3>
+          <div class="rounded-2xl border border-amber-200/80 bg-amber-50/60 p-4 text-xs text-koliss-text leading-relaxed">
+            {{ quote().notes }}
+          </div>
+        </div>
+      }
+
+      <!-- Coordonnées du demandeur -->
+      <div class="rounded-2xl border border-koliss-border bg-white p-4 space-y-2 text-xs">
+        <h4 class="font-bold text-koliss-text text-xs uppercase tracking-wider text-koliss-text-muted">
+          Coordonnées associées au devis
+        </h4>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-koliss-text">
+          <div>
+            <span class="text-koliss-text-muted">Contact :</span>
+            <span class="font-semibold ml-1">{{ quote().firstName }} {{ quote().lastName }}</span>
+            @if (quote().position) {
+              <span class="text-koliss-text-soft">({{ quote().position }})</span>
+            }
+          </div>
+          <div>
+            <span class="text-koliss-text-muted">Entreprise :</span>
+            <span class="font-semibold ml-1">{{ quote().company || 'Non renseignée' }}</span>
+          </div>
+          <div>
+            <span class="text-koliss-text-muted">Email :</span>
+            <span class="font-semibold ml-1">{{ quote().email || '—' }}</span>
+          </div>
+          <div>
+            <span class="text-koliss-text-muted">Téléphone :</span>
+            <span class="font-semibold ml-1">{{ quote().phone || '—' }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Engagement et contact conseiller dédié -->
+      <div class="flex items-center justify-between rounded-2xl border border-emerald-200 bg-emerald-50/70 p-4">
+        <div class="flex items-center gap-3">
+          <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-600 text-white shadow-sm">
+            <i class="pi pi-whatsapp text-lg" aria-hidden="true"></i>
+          </div>
+          <div>
+            <p class="text-xs font-bold text-emerald-950">Conseiller sourcing dédié</p>
+            <p class="text-[11px] text-emerald-700">
+              Des questions sur l'étude de ce dossier ? Échangez directement avec votre agent.
+            </p>
+          </div>
+        </div>
+        <a
+          [href]="whatsappChatUrl()"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex shrink-0 items-center gap-1.5 rounded-xl bg-emerald-600 px-3.5 py-2 text-xs font-bold text-white transition-colors hover:bg-emerald-700 shadow-sm"
+        >
+          <i class="pi pi-whatsapp" aria-hidden="true"></i>
+          WhatsApp
+        </a>
+      </div>
+    </div>
+
+    <!-- Pied de modale -->
+    <div class="border-t border-koliss-border bg-slate-50 px-6 py-4 flex items-center justify-end gap-3">
+      <button
+        type="button"
+        class="rounded-xl border border-koliss-border bg-white px-5 py-2.5 text-xs font-bold text-koliss-text transition-colors hover:bg-slate-100 hover:text-koliss-primary focus:outline-none"
+        (click)="close()"
+      >
+        Fermer
+      </button>
+    </div>
+  </div>
+</div>

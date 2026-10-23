@@ -1,0 +1,57 @@
+name: Koliss Sourcing
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build Docker image
+        run: |
+          docker build \
+            -f Dockerfile \
+            -t ${{ secrets.DOCKER_NAMESPACE }}/koliss-sourcing-dev:latest \
+            -t ${{ secrets.DOCKER_NAMESPACE }}/koliss-sourcing-dev:1.0.1 \
+            .
+
+      - name: Push to DockerHub
+        run: |
+          docker push ${{ secrets.DOCKER_NAMESPACE }}/koliss-sourcing-dev:latest
+          docker push ${{ secrets.DOCKER_NAMESPACE }}/koliss-sourcing-dev:1.0.1
+
+      - name: Copy docker-compose file
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.VPS_IP_DEV }}
+          username: ${{ secrets.VPS_USERNAME_DEV }}
+          key: ${{ secrets.VPS_KEY_DEV }}
+          source: docker-compose-sourcing-dev.yml
+          target: /opt/koliss-sourcing/
+
+      - name: Deploy Koliss Sourcing
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.VPS_IP_DEV }}
+          username: ${{ secrets.VPS_USERNAME_DEV }}
+          key: ${{ secrets.VPS_KEY_DEV }}
+          script: |
+            export DOCKER_NAMESPACE="${{ secrets.DOCKER_NAMESPACE }}"
+            cd /opt/koliss-sourcing/
+            echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login \
+              --username "${{ secrets.DOCKERHUB_USERNAME }}" \
+              --password-stdin
+            docker compose -f docker-compose-sourcing-dev.yml pull
+            docker compose -f docker-compose-sourcing-dev.yml up -d
