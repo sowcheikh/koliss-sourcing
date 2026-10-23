@@ -4,7 +4,7 @@
  */
 const GATEWAY_URL_LOCAL = 'http://localhost:8084';
 const GATEWAY_URL_PROD = 'https://gateway.yoni-ap.com';
-const IS_PROD_ENV = true;
+const IS_PROD_ENV = false;
 
 export const environment = {
   production: IS_PROD_ENV,
